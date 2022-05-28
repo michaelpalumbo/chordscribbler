@@ -1,4 +1,4 @@
-const { User, Thought, ChordScribble } = require('../models');
+const { User, ChordScribble } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const { Key } = require("@tonaljs/tonal");
@@ -16,13 +16,7 @@ const resolvers = {
                 return userData;
           }
         },
-        thoughts: async (parent, { username }) => {
-            const params = username ? { username } : {};
-            return Thought.find(params).sort({ createdAt: -1 });
-        },
-        thought: async (parent, { _id }) => {
-            return Thought.findOne({ _id });
-        },
+        
         // get all users
         users: async () => {
             return User.find()
