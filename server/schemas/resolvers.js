@@ -52,7 +52,13 @@ const resolvers = {
                     return JSON.stringify(keyInfo.natural.chords)
                 break
             }     
+        },
+        getChordScribble : async (parent, {username,scribbleBox,chordName}) =>{
+
+            return await ChordScribble.findOne({ username,scribbleBox,chordName });
+
         }
+
     },
     Mutation: {
         addUser: async (parent,args) => {

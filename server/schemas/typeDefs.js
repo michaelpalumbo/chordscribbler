@@ -43,6 +43,7 @@ const typeDefs = gql`
   thoughts(username: String): [Thought]
   thought(_id: ID!): Thought
   chordTwoList(chord: String!): String
+  getChordScribble(username: String!,scribbleBox: Int!,chordName: String!): ChordScribble
   }
 
   type Mutation {
