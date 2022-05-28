@@ -1,4 +1,4 @@
-const { User, Thought } = require('../models');
+const { User, Thought, ChordScribble } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const { Key } = require("@tonaljs/tonal");
@@ -77,9 +77,25 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        chordScribble: async (parent, {username,scribbleText,scribbleBox,chordName}) =>{
-            return {username, scribbleText,scribbleBox,chordName } 
-        }
+        chordScribble : async (parent, {username,scribbleText,scribbleBox,chordName}) =>{
+           let newScribble 
+            const chordScribble = await ChordScribble.findOne({ username,scribbleBox,chordName });
+                if (chordScribble) {
+                    // this chordScribble exists, therefore will update it 
+                    newScribble = await ChordScribble.findOneAndUpdate({username,scribbleBox,chordName },{scribbleText: scribbleText},{new: true} )
+                    
+                }
+                else {
+                    // chordCribble doesn't exist yet, create it
+                    newScribble = await ChordScribble.create({ username,scribbleText,scribbleBox,chordName });
+
+                }
+            
+            
+            
+            return newScribble
+        },
+        
       }
 
 };
