@@ -11,3 +11,10 @@ Roles:
 
 Team Name: The Reduxers
 Link to Repo: https://github.com/michaelpalumbo/project3
+
+
+## Setup (dev-version):
+
+1. after cloning, cd into /server and run ```npm install @tonaljs/tonal```
+2. then run ```npm install```
+3. start the server using ```npm run watch```
