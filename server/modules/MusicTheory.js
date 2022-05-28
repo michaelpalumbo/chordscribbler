@@ -1,51 +1,21 @@
 const { Key } = require("@tonaljs/tonal");
 
-
-// const musicKeys = {
-//     major: ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'],
-//     minor: ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
-// }
-
-// drop-down menu 1 is hardcoded, and these are the list elements (please type exactly):
-// C major
-// Db Major
-// .. 
-
-// user has selected this chord in drop-down menu 1
-let chord1Choice = "Db major"
-
-
-let chord = chord1Choice.split(' ')[0]
-let type = chord1Choice.split(' ')[1]
-
-console.log('chord', chord, 'type', type)
-
-
-// let keyInfo;
-// // if(process.argv[2]){
-// //     chord = process.argv[2]
-// // }
-// // if(process.argv[3]){
-// //     type = process.argv[3]
-// // }
-
-// console.log('using chord', chord, type)
-
-switch(type){
-    case "major":
-        keyInfo = Key.majorKey(chord)
-        console.log(keyInfo.chords)
+module.exports.getChord2List = (chord1) => {
+    let key = chord1.split(' ')[0]
+    let type = chord1.split(' ')[1]
+    switch(type){
+        case "major":
+            keyInfo = Key.majorKey(key)
+            // console.log(keyInfo.chords)
         return keyInfo.chords
 
-    break
+        case "minor":
+            keyInfo = Key.minorKey(key)
+            // console.log(keyInfo.natural.chords)
+            return keyInfo.natural.chords
+    }
 
-    case "minor":
-        keyInfo = Key.minorKey(chord)
-        console.log(keyInfo.natural.chords)
-        return keyInfo.natural.chords
-    break
 }
-
 // songs this chord progression is found in:
 // if I and IV are selected, send GET request to hooktheory api at ~/trends/songs?cp=4,1
 // we might want to scrape the database in advance and have this data in our db so users don't need to 
