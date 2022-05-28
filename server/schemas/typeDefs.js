@@ -13,7 +13,13 @@ const typeDefs = gql`
     reactionCount: Int
     reactions: [Reaction]
   }
-
+  type ChordScribble{
+    _id: ID
+    username: String
+    scribbleText: String
+    scribbleBox: Int
+    chordName: String
+  }
   type Reaction {
     _id: ID
     reactionBody: String
@@ -42,6 +48,7 @@ const typeDefs = gql`
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
+    chordScribble(username: String!, scribbleText: String!,scribbleBox: Int!, chordName: String!): ChordScribble
   }
 
   type Auth {

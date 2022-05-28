@@ -76,8 +76,12 @@ const resolvers = {
           
             const token = signToken(user);
             return { token, user };
+        },
+        chordScribble: async (parent, {username,scribbleText,scribbleBox,chordName}) =>{
+            return {username, scribbleText,scribbleBox,chordName } 
         }
       }
+
 };
   
 module.exports = resolvers;
