@@ -1,6 +1,7 @@
 const { User, Thought } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
+const { Key } = require("@tonaljs/tonal");
 
 
 const resolvers = {
@@ -36,6 +37,22 @@ const resolvers = {
             .populate('friends')
             .populate('thoughts');
         },
+        chordTwoList: async (parent, {chord})=>{
+            // user has selected this chord in drop-down menu 1
+            chordname = chord.split(' ')[0]
+            type = chord.split(' ')[1]
+            
+            switch(type){
+                case "major":
+                    keyInfo = Key.majorKey(chordname)
+                    return JSON.stringify(keyInfo.chords)
+                break
+                case "minor":
+                    keyInfo = Key.minorKey(chordname)
+                    return JSON.stringify(keyInfo.natural.chords)
+                break
+            }     
+        }
     },
     Mutation: {
         addUser: async (parent,args) => {

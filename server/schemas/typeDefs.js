@@ -29,13 +29,14 @@ const typeDefs = gql`
     thoughts: [Thought]
     friends: [User]
   }
-  
+
   type Query {
     me: User
   users: [User]
   user(username: String!): User
   thoughts(username: String): [Thought]
   thought(_id: ID!): Thought
+  chordTwoList(chord: String!): String
   }
 
   type Mutation {
@@ -47,7 +48,14 @@ const typeDefs = gql`
     token: ID!
     user: User
   }
+
+
 `;
 
 // export the typeDefs
 module.exports = typeDefs;
+
+//   type Chord {
+//     chord: String
+//   }
+

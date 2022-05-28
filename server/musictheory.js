@@ -6,29 +6,43 @@ const { Key } = require("@tonaljs/tonal");
 //     minor: ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B']
 // }
 
-let chord = "C";
-let type = "major"
-let keyInfo;
-// if(process.argv[2]){
-//     chord = process.argv[2]
-// }
-// if(process.argv[3]){
-//     type = process.argv[3]
-// }
+// drop-down menu 1 is hardcoded, and these are the list elements (please type exactly):
+// C major
+// Db Major
+// .. 
 
-console.log('using chord', chord, type)
+// user has selected this chord in drop-down menu 1
+let chord1Choice = "Db major"
+
+
+let chord = chord1Choice.split(' ')[0]
+let type = chord1Choice.split(' ')[1]
+
+console.log('chord', chord, 'type', type)
+
+
+// let keyInfo;
+// // if(process.argv[2]){
+// //     chord = process.argv[2]
+// // }
+// // if(process.argv[3]){
+// //     type = process.argv[3]
+// // }
+
+// console.log('using chord', chord, type)
 
 switch(type){
     case "major":
         keyInfo = Key.majorKey(chord)
         console.log(keyInfo.chords)
+        return keyInfo.chords
 
     break
 
     case "minor":
         keyInfo = Key.minorKey(chord)
         console.log(keyInfo.natural.chords)
-
+        return keyInfo.natural.chords
     break
 }
 
