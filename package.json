@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/michaelpalumbo/project3/issues"
   },
-  "homepage": "https://github.com/michaelpalumbo/project3#readme"
+  "homepage": "https://github.com/michaelpalumbo/project3#readme",
+  "dependencies": {
+    "@tonaljs/key": "^4.6.5",
+    "@tonaljs/tonal": "^4.6.5"
+  }
 }

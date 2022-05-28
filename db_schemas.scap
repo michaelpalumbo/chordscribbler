@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScappleDocument Version="1.2" ID="8FA3CCFD-A077-4007-BBD6-E12ED1AF9DB4">
+    <Notes>
+        <Note ID="0" FontSize="12.0" Position="218.15625,222.6875" Width="42.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>User</String>
+            <ConnectedNoteIDs>1-6, 9, 11-12</ConnectedNoteIDs>
+        </Note>
+        <Note ID="1" FontSize="12.0" Position="384.667969,20.0" Width="70.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>username</String>
+            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+        </Note>
+        <Note ID="2" FontSize="12.0" Position="389.667969,94.0" Width="45.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>email</String>
+            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+        </Note>
+        <Note ID="3" FontSize="12.0" Position="390.667969,169.0" Width="68.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>password</String>
+            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+        </Note>
+        <Note ID="4" FontSize="12.0" Position="435.59375,219.109375" Width="83.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>chord1name</String>
+            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+        </Note>
+        <Note ID="5" FontSize="12.0" Position="422.183594,336.113281" Width="83.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>chord2name</String>
+            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+        </Note>
+        <Note ID="6" FontSize="12.0" Position="271.496094,398.691406" Width="74.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>chordPairs</String>
+            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+        </Note>
+        <Note ID="9" FontSize="12.0" Position="162.03125,403.378906" Width="52.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>history</String>
+            <ConnectedNoteIDs>0, 10</ConnectedNoteIDs>
+        </Note>
+        <Note ID="10" FontSize="12.0" Position="123.730469,452.050781" Width="44.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>array</String>
+            <ConnectedNoteIDs>9</ConnectedNoteIDs>
+        </Note>
+        <Note ID="11" FontSize="12.0" Position="480.203125,258.015625" Width="103.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>chord1Thoughts</String>
+            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+        </Note>
+        <Note ID="12" FontSize="12.0" Position="379.414062,380.886719" Width="103.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>chord2Thoughts</String>
+            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+        </Note>
+    </Notes>
+    <BackgroundShapes></BackgroundShapes>
+    <AutoFit>0-6, 9-12</AutoFit>
+    <NoteStyles>
+        <Style Name="Bubble (Blue)" ID="9A682147-17A4-4064-96E3-D2212326E3E1" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
+            <BorderThickness>1</BorderThickness>
+            <BorderColor>0.668968 0.810267 0.895084</BorderColor>
+            <FillColor>0.743297 0.900297 0.994538</FillColor>
+        </Style>
+        <Style Name="Bubble (Green)" ID="1E948EC3-C47E-457D-A723-DF9D2857B14B" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
+            <BorderThickness>1</BorderThickness>
+            <BorderColor>0.669411 0.885244 0.567003</BorderColor>
+            <FillColor>0.74379 0.983605 0.630003</FillColor>
+        </Style>
+        <Style Name="Bubble (Pink)" ID="EC1994AA-C9C5-4BA3-97F7-9E8E908E9127" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
+            <BorderThickness>1</BorderThickness>
+            <BorderColor>0.894548 0.707752 0.715898</BorderColor>
+            <FillColor>0.989117 0.814091 0.999474</FillColor>
+        </Style>
+        <Style Name="Bubble (Red)" ID="66479661-FF7E-4056-8E88-78449A105CF4" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
+            <BorderThickness>1</BorderThickness>
+            <BorderColor>0.894548 0.707752 0.715898</BorderColor>
+            <FillColor>0.993942 0.786391 0.795442</FillColor>
+        </Style>
+        <Style Name="Bubble (Yellow)" ID="235B525B-13CF-4076-AAC6-31F92E391000" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
+            <BorderThickness>1</BorderThickness>
+            <BorderColor>0.87775 0.828268 0.562122</BorderColor>
+            <FillColor>0.975278 0.920298 0.62458</FillColor>
+        </Style>
+        <Style Name="Red Text" ID="F3D7F02A-8859-4B2B-A08F-EA6094DB3889" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="Yes" AffectNoteBody="No" AffectFade="No">
+            <TextColor>0.985948 0.0 0.026951</TextColor>
+        </Style>
+        <Style Name="Title Text" ID="F7F0D1FD-04FA-418F-A7A8-31709A20B1EB" AffectFontStyle="Yes" AffectAlignment="Yes" AffectTextColor="No" AffectNoteBody="No" AffectFade="No">
+            <FontSize>28.0</FontSize>
+            <IsBold>Yes</IsBold>
+        </Style>
+    </NoteStyles>
+    <UISettings>
+        <BackgroundColor>0.999767 0.98837 0.949907</BackgroundColor>
+        <DefaultFont>Helvetica</DefaultFont>
+        <NoteXPadding>8.0</NoteXPadding>
+    </UISettings>
+    <PrintSettings PaperSize="612.0,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="na-letter" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
+</ScappleDocument>
