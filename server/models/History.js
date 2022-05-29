@@ -23,7 +23,11 @@ const historySchema = new Schema(
             type: Date,
             required: true,
             get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a'),
-            default: Date.now,
+            default: Date.now
         }
     }
 )
+
+const History = model('History', historySchema)
+
+module.exports = History

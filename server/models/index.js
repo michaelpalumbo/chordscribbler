@@ -1,4 +1,4 @@
 const User = require('./User');
 const ChordScribble = require('./ChordScribble');
-
-module.exports = { User, ChordScribble };
+const History = require('./History')
+module.exports = { User, ChordScribble, History };
