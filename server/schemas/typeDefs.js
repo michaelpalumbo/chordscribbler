@@ -12,6 +12,15 @@ const typeDefs = gql`
     chordName: String
   }
 
+  type ChordPairScribble{
+    _id: ID
+    username: String
+    scribbleText: String
+    scribbleBox: Int
+    chord1: String
+    chord2: String
+  }
+
   type History{
     _id: ID
     username: String
@@ -34,6 +43,7 @@ const typeDefs = gql`
     chordTwoList(chord: String!): String
     getChordScribble(username: String!,scribbleBox: Int!,chordName: String!): ChordScribble
     getHistory(username: String!): [History]
+    getChordPairScribble(username: String!,scribbleText: String,chord1: String!, chord2: String!): ChordPairScribble
   }
 
   type Mutation {
@@ -41,6 +51,7 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     chordScribble(username: String!, scribbleText: String!,scribbleBox: Int!, chordName: String!): ChordScribble
     updateHistory(username: String!, scribbleText: String!,scribbleBox: Int!, chordName: String!, timeStamp: String): History
+    chordPairScribble(username: String!, scribbleText: String!,scribbleBox: Int!,chord1: String!, chord2: String!): ChordPairScribble
   }
   type Auth {
     token: ID!
@@ -53,7 +64,5 @@ const typeDefs = gql`
 // export the typeDefs
 module.exports = typeDefs;
 
-//   type Chord {
-//     chord: String
-//   }
+
 
