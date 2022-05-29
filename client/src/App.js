@@ -1,12 +1,11 @@
-import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from 'apollo-server-express';
-// import { setContext } from '@apollo/client/link/context';
+import { setContext } from '@apollo/client/link/context';
+import { createHttpLink, ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import './App.css';
-
-import Navbar from '../components/Nav/Index';
-import Header from '../components/Header/Header';
-import Main from '../components/Main';
-import Footer from '../components/Footer/Footer';
+// import Navbar from './components/Nav/Index';
+import Header from './components/Header/Header';
+// import Main from './components/Main';
+import Footer from './components/Footer/Footer';
 
 const httpLink = createHttpLink({
   uri: '/graphql'
@@ -33,9 +32,9 @@ function App() {
 
       <ApolloProvider client={client}>
 
-          <Navbar />
+          {/* <Navbar /> */}
           <Header />
-          <Main />
+          {/* <Main /> */}
           <Footer />
    
       </ApolloProvider >
