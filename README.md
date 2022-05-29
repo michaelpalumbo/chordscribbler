@@ -15,6 +15,8 @@ Link to Repo: https://github.com/michaelpalumbo/project3
 
 ## Setup (dev-version):
 
-1. after cloning, cd into /server and run ```npm install @tonaljs/tonal```
-2. then run ```npm install```
-3. start the server using ```npm run watch```
+1. In root folder run ```npm install```
+2. cd into server folder and run ``npm install``
+3. cd into client folder and run ``npm install``
+4. cd back into root folder and run `` npm run develop ``
+(this will run the full stack of the application)
