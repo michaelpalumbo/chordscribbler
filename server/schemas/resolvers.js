@@ -40,13 +40,19 @@ const resolvers = {
             return await ChordScribble.findOne({ username,scribbleBox,chordName });
 
         },
+        
         getHistory: async (parent, {username})=>{
             let foo = await History.find({username})
             
             return foo.reverse()
-        }
+        },
 
+        getChordPairScribble : async (parent, {username,scribbleBox,chord1,chord2}) =>{
+
+            return await ChordPairScribble.findOne({ username,scribbleBox,chord1,chord2 });
+        },
     },
+    
     Mutation: {
         addUser: async (parent,args) => {
             const user = await User.create(args);
