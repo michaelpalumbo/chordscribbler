@@ -1,4 +1,4 @@
-const { User, ChordScribble } = require('../models');
+const { User, ChordScribble, History } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const { Key } = require("@tonaljs/tonal");
@@ -14,7 +14,7 @@ const resolvers = {
                     .populate('friends');
             
                 return userData;
-          }
+            }
         },
         
         // get all users
@@ -39,6 +39,11 @@ const resolvers = {
 
             return await ChordScribble.findOne({ username,scribbleBox,chordName });
 
+        },
+        getHistory: async (parent, {username})=>{
+            let foo = await History.find({username})
+            
+            return foo.reverse()
         }
 
     },
@@ -83,6 +88,10 @@ const resolvers = {
             
             return newScribble
         },
+        updateHistory: async(parent, {username, scribbleText, scribbleBox, chordName}) => {
+            let timeStamp = new Date();
+            return await History.create({ username,scribbleText,scribbleBox,chordName, timeStamp });
+        }
         
       }
 
