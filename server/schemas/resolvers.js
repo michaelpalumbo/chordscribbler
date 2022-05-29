@@ -41,9 +41,9 @@ const resolvers = {
 
         },
         getHistory: async (parent, {username})=>{
-           
+            let foo = await History.find({username})
             
-            return await History.find({username})
+            return foo.reverse()
         }
 
     },
