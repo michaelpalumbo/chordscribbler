@@ -83,6 +83,11 @@ const resolvers = {
             
             return newScribble
         },
+        updateHistory: async(parent, {username, scribbleText, scribbleBox, chordName}) => {
+            let timeStamp = new Date();
+            
+            return {username, scribbleText, scribbleBox, chordName, timeStamp}
+        }
         
       }
 
