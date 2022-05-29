@@ -14,7 +14,7 @@ const resolvers = {
                     .populate('friends');
             
                 return userData;
-          }
+            }
         },
         
         // get all users
@@ -40,9 +40,11 @@ const resolvers = {
             return await ChordScribble.findOne({ username,scribbleBox,chordName });
 
         },
-        // getHistory: async (parent, {username})=>{
-        //     userHistory = History.
-        // }
+        getHistory: async (parent, {username})=>{
+           
+            
+            return await History.find({username})
+        }
 
     },
     Mutation: {
