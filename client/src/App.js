@@ -1,4 +1,4 @@
-import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from 'apollo-server-express';
 import { setContext } from '@apollo/client/link/context';
 
 import './App.css';
