@@ -41,10 +41,14 @@ const resolvers = {
 
         },
         getChordHighlighting : async (parent, {username,scribbleBox}) =>{
-
-            return await ChordScribble.find({ username,scribbleBox})
-
+          
+                return await ChordScribble.find({ username,scribbleBox});
+        
         },
+        getChordPairHighlighting : async(parent,{username})=> {
+            return await ChordPairScribble.find({ username});
+        },
+       
         
         getHistory: async (parent, {username})=>{
             let foo = await History.find({username})
