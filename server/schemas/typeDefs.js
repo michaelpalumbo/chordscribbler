@@ -42,16 +42,19 @@ const typeDefs = gql`
     user(username: String!): User
     chordTwoList(chord: String!): String
     getChordScribble(username: String!,scribbleBox: Int!,chordName: String!): ChordScribble
-    getHistory(username: String!): [History]
+    getChordHighlighting(username: String!, scribbleBox: Int): [ChordScribble]
     getChordPairScribble(username: String!,scribbleBox: Int!, chord1: String!, chord2: String!): ChordPairScribble
+    getHistory(username: String!): [History]
+    
   }
 
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     chordScribble(username: String!, scribbleText: String!,scribbleBox: Int!, chordName: String!): ChordScribble
-    updateHistory(username: String!, scribbleText: String!,scribbleBox: Int!, chordName: String!, timeStamp: String): History
     chordPairScribble(username: String!, scribbleText: String!,scribbleBox: Int!,chord1: String!, chord2: String!): ChordPairScribble
+    updateHistory(username: String!, scribbleText: String!,scribbleBox: Int!, chordName: String!, timeStamp: String): History
+    
   }
   type Auth {
     token: ID!

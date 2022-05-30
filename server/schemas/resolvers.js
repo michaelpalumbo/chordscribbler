@@ -40,6 +40,11 @@ const resolvers = {
             return await ChordScribble.findOne({ username,scribbleBox,chordName });
 
         },
+        getChordHighlighting : async (parent, {username,scribbleBox}) =>{
+
+            return await ChordScribble.find({ username,scribbleBox})
+
+        },
         
         getHistory: async (parent, {username})=>{
             let foo = await History.find({username})
