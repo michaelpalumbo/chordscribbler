@@ -2,10 +2,10 @@ import { setContext } from '@apollo/client/link/context';
 import { createHttpLink, ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import './App.css';
-import Navbar from './components/Navbar.js';
+// import Navbar from './components/Navbar/Navbar';
 // import Main from './components/Main';
-import Header from './components/Header.js';
-import Footer from './components/Footer.js';
+import Header from './components/Header/Header.js';
+import Footer from './components/Footer/Footer';
 
 
 const httpLink = createHttpLink({
@@ -32,9 +32,33 @@ function App() {
     <div className="site-container">
 
       <ApolloProvider client={client}>
-          <Navbar />
           <Header />
+          <br />
+          <br />
+          <br />
+          <br />
           {/* <Main /> */}
+          <br />
+          <br />
+          <br />
+          <br />
+
+
+
+
+
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
           <Footer />
       </ApolloProvider >
 
