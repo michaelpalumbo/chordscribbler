@@ -6,6 +6,7 @@ import './App.css';
 // import Main from './components/Main';
 import Header from './components/Header/Header.js';
 import Footer from './components/Footer/Footer';
+import Login from './components/Login/LoginForm';
 
 
 const httpLink = createHttpLink({
@@ -37,27 +38,11 @@ function App() {
           <br />
           <br />
           <br />
-          {/* <Main /> */}
+          {/* <Login /> */}
           <br />
           <br />
           <br />
-          <br />
-
-
-
-
-
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          <Login />
           <br />
           <Footer />
       </ApolloProvider >
