@@ -1,7 +1,5 @@
 import React from 'react';
-import ThoughtList from '../components/ThoughtList';
-import ThoughtForm from '../components/ThoughtForm';
-import FriendList from '../components/FriendList';
+
 
 import Auth from '../utils/auth';
 import { useQuery } from '@apollo/client';
