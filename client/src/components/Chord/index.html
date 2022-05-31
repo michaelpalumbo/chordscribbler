@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+	<!-- JQUERY -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>  
+  </head>
+  <body>
+
+    <div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<h1>ReCHORDr</h1>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div class="dropdown">
+							
+							<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+								Chord One
+							</button>
+							<div class="dropdown-menu chord1Menu" aria-labelledby="dropdownMenuButton">
+
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="dropdown">
+							
+							<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+								Chord Two
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						chord1 diagrams...
+						<!-- this is where the chord1 diagrams will go. Michael will take care of this code soonish -->
+					</div>
+					<div class="col-md-6">
+						chord2 diagrams...
+						<!-- this is where the chord2 diagrams will go. Michael will take care of this code soonish -->
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-6">
+						<!-- chord 1 scribble -->
+						<div class="form-outline">
+							<textarea class="form-control" id="chord1Scribble" placeholder="Write your progress for Chord 1 here" rows="4"></textarea>
+						
+						</div>
+					</div>
+				
+					<div class="col-md-6">
+						<div class="form-outline">
+							<textarea class="form-control" id="chord2Scribble" placeholder="Write your progress for Chord 2 here" rows="4"></textarea>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-12">
+						
+						<div class="form-outline">
+							<textarea class="form-control" id="chordPairScribble" placeholder="Write your progress for this chord pairing here" rows="6"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<h2>
+					History
+				</h2>
+				<div class="form-outline">
+					<textarea class="form-control" id="chord2Scribble" placeholder="Your progress will be listed here" rows="30"></textarea>
+				</div>
+				<!-- <p>
+					<a class="btn" href="#">View details »</a>
+				</p> -->
+			</div>
+		</div>
+	</div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/chordScribbles.js"></script>
+	
+  </body>
+</html>
