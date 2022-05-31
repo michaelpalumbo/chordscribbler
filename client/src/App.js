@@ -57,14 +57,6 @@ function App() {
                 element={<Signup />} 
               />
               <Route 
-                path="/profile" 
-                element={<Profile />} 
-              />
-              <Route 
-                path="/thought/:id" 
-                element={<SingleThought />} 
-              />
-              <Route 
                 path="*" 
                 element={<NoMatch />} 
               />
