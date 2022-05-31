@@ -1,15 +1,25 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { createHttpLink, ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
-import './App.css';
-// import Navbar from './components/Navbar/Navbar';
-// import Main from './components/Main';
-import Header from './components/Header/Header.js';
-import Footer from './components/Footer/Footer';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
+import Home from './pages/Home';
+import Login from './pages/Login';
+import NoMatch from './pages/NoMatch';
+import SingleThought from './pages/SingleThought';
+import Profile from './pages/Profile';
+import Signup from './pages/Signup';
 
 const httpLink = createHttpLink({
-  uri: '/graphql'
+  uri: '/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -18,7 +28,7 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : '',
-    }
+    },
   };
 });
 
@@ -29,41 +39,42 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <div className="site-container">
-
-      <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+      <Router>
+        <div className="flex-column justify-flex-start min-100-vh">
           <Header />
-          <br />
-          <br />
-          <br />
-          <br />
-          {/* <Main /> */}
-          <br />
-          <br />
-          <br />
-          <br />
-
-
-
-
-
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          <div className="container">
+            <Routes>
+              <Route 
+                path="/" 
+                element={<Home />} 
+              />
+              <Route 
+                path="/login" 
+                element={<Login />} 
+              />
+              <Route 
+                path="/signup" 
+                element={<Signup />} 
+              />
+              <Route 
+                path="/profile" 
+                element={<Profile />} 
+              />
+              <Route 
+                path="/thought/:id" 
+                element={<SingleThought />} 
+              />
+              <Route 
+                path="*" 
+                element={<NoMatch />} 
+              />
+            </Routes>
+          </div>
           <Footer />
-      </ApolloProvider >
-
-    </div>
-
+        </div>
+      </Router>
+    </ApolloProvider>
   );
 }
 
