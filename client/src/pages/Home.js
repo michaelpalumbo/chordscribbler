@@ -1,13 +1,17 @@
 import React, {useState} from 'react';
 import { Dropdown, Input } from 'react-bootstrap';
 import Auth from '../utils/auth';
-import { useQuery } from '@apollo/client';
+import { useQuery, useLazyQuery } from '@apollo/client';
 import Select from 'react-select';
-// import { QUERY_THOUGHTS, QUERY_ME_BASIC } from '../utils/queries';
+import { QUERY_FIRST_CHORD } from '../utils/queries';
 // import chordScribbles from '../utils/chordScribbles'
 // import ScriptTag from 'react-script-tag';
 import {Helmet} from "react-helmet";
-import $ from "jquery"
+
+const fetchUsers = async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  return res.json();
+};
 
 
 const Home = () =>{
@@ -17,17 +21,29 @@ const Home = () =>{
 
   // dropdown initial state
   let [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
-   
-
+  // USE A LAZYQUERY to run a query anytime after the component loads. in this case, use it to get the chord2List
+  const [getChord2List, {loading, error, data: myValues}] = useLazyQuery(QUERY_FIRST_CHORD, {
+    onCompleted: someData => {
+      let chord2List = JSON.parse(someData.chordTwoList)
+      // populate chord2menu
+      populateChord2Menu(chord2List)
+    }
+  });
+  // capture menu1 input changes, pass values to chord2menu state
+  const handleMenuChange = async (event) => {
+    let { value } = event.target;
+    getChord2List({ variables: {chord: value } });
+  };
   
+  
+
   /*/////////////////////////////////////
    chord2menu code */
-    const [chord2MenuItems, setChord2MenuItems] = useState( [])
+  const [chord2MenuItems, setChord2MenuItems] = useState( [])
+  function populateChord2Menu(array){
+    setChord2MenuItems(array)
+  }
 
-
-  // const { loading, data } = useQuery(QUERY_THOUGHTS);
-  // const { data: userData } = useQuery(QUERY_ME_BASIC);
-  // const thoughts = data?.thoughts || [];
 
     const loggedIn = Auth.loggedIn();
     
@@ -55,7 +71,7 @@ const Home = () =>{
                 <div className="row">
                   <div className="col-md-6">
                     {/* Chord 1 Menu */}
-                    <select name="chord1Menu" id="chord1Menu">
+                    <select onChange={handleMenuChange} name="chord1Menu" id="chord1Menu">
                       
                       {
                         chord1MenuItems.map(chord => <option value={chord}>{chord}</option>)
@@ -64,7 +80,7 @@ const Home = () =>{
                   </div>
                   <div className="col-md-6">
                     {/* Chord 2 Menu */}
-                    <select  name="chord2Menu" id="chord2Menu">
+                    <select name="chord2Menu" id="chord2Menu">
                         
                       {
                         chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)

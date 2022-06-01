@@ -1,21 +1,9 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_THOUGHTS = gql`
-  query thoughts($username: String) {
-    thoughts(username: $username) {
-      _id
-      thoughtText
-      createdAt
-      username
-      reactionCount
-      reactions {
-        _id
-        createdAt
-        username
-        reactionBody
-      }
-    }
-  }
+export const QUERY_FIRST_CHORD = gql`
+  query firstChord($chord: String!) {
+    chordTwoList(chord: $chord) 
+  } 
 `;
 
 export const QUERY_THOUGHT = gql`
