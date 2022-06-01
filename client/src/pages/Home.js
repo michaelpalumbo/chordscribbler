@@ -14,6 +14,12 @@ import decode from 'jwt-decode';
 let chord1Selection, chord2Selection, username
 
 const Home = () =>{
+  const [chord1Scribble, setChord1Scribble] = useState('')
+  const [chord2MenuItems, setChord2MenuItems] = useState( [])
+  const [storeScribble1, { data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
+
+
+
   /*/////////////////////////////////////
    first things first, get username by their email, as we need it for all mutations/queries */
   username = Auth.getProfile().data.username
@@ -46,7 +52,6 @@ const Home = () =>{
 
   /*/////////////////////////////////////
    chord2menu code */
-  const [chord2MenuItems, setChord2MenuItems] = useState( [])
   function populateChord2Menu(array){
     setChord2MenuItems(array)
   }
@@ -54,25 +59,34 @@ const Home = () =>{
 
    /*/////////////////////////////////////
   chord1 scribble code */
-  const [chord1Scribble, setChord1Scribble] = useState('')
   const [getChord1Scribble, {data: scribble1}] = useLazyQuery(QUERY_SCRIBBLE, {
     onCompleted: scribbleText => {
+      // reset scribble text box to empty string
+      setChord1Scribble('')
       // if scribbleText exists for chosen chord...
       if(scribbleText.getChordScribble){
+        
         setChord1Scribble(scribbleText.getChordScribble.scribbleText)
       }else {
-        // reset scribble text box to empty string
-        setChord1Scribble('')
+        
       }
     }
   });
   
   // capture text input and mutate the db entry for this user.scribble.chord
-  const [updateChord1Scribble, { error }] = useMutation(MUTATION_CHORD_SCRIBBLE);
+  // const [updateChord1Scribble, { error }] = useMutation(MUTATION_CHORD_SCRIBBLE);
   // capture scribble1 input changes, doo a buncha things
+
   const handleScribble1Change = async (event) => {
     let { value } = event.target;
-    console.log(value)
+    console.log('text:', value)
+
+    storeScribble1({ variables: {  "username": username,
+        "scribbleText": value,
+        "scribbleBox": 1,
+        "chordName": chord1Selection },
+      }) 
+
     // try {
     //   const { data } = await updateChord1Scribble({
     //     variables: {  "username": username,
