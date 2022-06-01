@@ -18,22 +18,10 @@ export const QUERY_THOUGHTS = gql`
   }
 `;
 
-export const QUERY_THOUGHT = gql`
-  query thought($id: ID!) {
-    thought(_id: $id) {
-      _id
-      thoughtText
-      createdAt
-      username
-      reactionCount
-      reactions {
-        _id
-        createdAt
-        username
-        reactionBody
-      }
-    }
-  }
+export const FIRSTCHORD = gql`
+  query firstChord($chord: String!) {
+    chordTwoList(chord: $chord)
+}
 `;
 
 export const QUERY_USER = gql`

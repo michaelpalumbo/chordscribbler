@@ -2,23 +2,54 @@ import React, {useState} from 'react';
 import { Dropdown, Input } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { useQuery } from '@apollo/client';
+import { FIRSTCHORD} from '../utils/queries';
 // import { QUERY_THOUGHTS, QUERY_ME_BASIC } from '../utils/queries';
 // import chordScribbles from '../utils/chordScribbles'
 // import ScriptTag from 'react-script-tag';
 import {Helmet} from "react-helmet";
-import $ from "jquery"
 
 
 const Home = () =>{
     const [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
-    const [chord2MenuItems, setChord2MenuItems] = useState( [])
+    const [chord2MenuItems, setChord2MenuItems] = useState([])
 
-  // const { loading, data } = useQuery(QUERY_THOUGHTS);
+  const { loading, data } = useQuery(FIRSTCHORD);
   // const { data: userData } = useQuery(QUERY_ME_BASIC);
   // const thoughts = data?.thoughts || [];
 
     const loggedIn = Auth.loggedIn();
     
+    
+//Attempted to kickstart menu option, but code not working
+    // const Dropdown = ({
+    //   options
+    // }) => {
+    //   const [chord2MenuItems, setChord2MenuItems] = useState(options[0].chord);
+    //   return (
+    //       <select
+    //         value={chord2MenuItems}
+    //         onChange={e => setChord2MenuItems(e.target.chord)}>
+    //         {options.map(o => (
+    //           <option key={o.chord2MenuItems} value={chord2MenuItems}>{chord2MenuItems}</option>
+    //         ))}
+    //       </select>
+    //   );
+    // };
+    
+    // useEffect(() => {
+    //   setLoadingTypes(true);
+    //   FIRSTCHORD("DEFAULT");
+    //   const availableOptions = async () => {
+    //     const availableTypes = await Axios.get();
+        
+    //     if(availableTypes.data.length > 0) {
+    //       setAvailableTypes(availableTypes.data.map(FIRSTCHORD => ({name: chordTwoList})));
+    //       setLoadingTypes(false);
+    //     }
+    //   };
+    //   availableOptions();
+    // }, [FIRSTCHORD]);
+
     return (    
       <main>
         <Helmet>
@@ -53,10 +84,10 @@ const Home = () =>{
                   <div className="col-md-6">
                     {/* Chord 2 Menu */}
                     <select name="chord2Menu" id="chord2Menu">
-                        
                       {
                         chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
                       }
+                      <select> options={this.state.FIRSTCHORD} </select>
                     </select>
                   </div>
                 </div>
@@ -109,6 +140,8 @@ const Home = () =>{
             </div>
           </div>
 
+          
+
         
         
         {/* </div> */}
@@ -123,3 +156,4 @@ const Home = () =>{
 
 
 export default Home;
+
