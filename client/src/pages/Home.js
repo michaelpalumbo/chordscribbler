@@ -1,38 +1,45 @@
 import React, {useState} from 'react';
 import { Dropdown, Input } from 'react-bootstrap';
 import Auth from '../utils/auth';
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import Select from 'react-select';
-import { QUERY_FIRST_CHORD } from '../utils/queries';
+import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL } from '../utils/queries';
+import { MUTATION_CHORD_SCRIBBLE } from '../utils/mutations';
 // import chordScribbles from '../utils/chordScribbles'
 // import ScriptTag from 'react-script-tag';
 import {Helmet} from "react-helmet";
+import decode from 'jwt-decode';
 
-const fetchUsers = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/users");
-  return res.json();
-};
 
+let chord1Selection, chord2Selection, username
 
 const Home = () =>{
-   
+  /*/////////////////////////////////////
+   first things first, get username by their email, as we need it for all mutations/queries */
+  username = Auth.getProfile().data.username
+  
   /*/////////////////////////////////////
    chord1menu code */
 
   // dropdown initial state
   let [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
   // USE A LAZYQUERY to run a query anytime after the component loads. in this case, use it to get the chord2List
-  const [getChord2List, {loading, error, data: myValues}] = useLazyQuery(QUERY_FIRST_CHORD, {
+  const [getChord2List, {data: myValues}] = useLazyQuery(QUERY_FIRST_CHORD, {
     onCompleted: someData => {
       let chord2List = JSON.parse(someData.chordTwoList)
       // populate chord2menu
       populateChord2Menu(chord2List)
     }
   });
-  // capture menu1 input changes, pass values to chord2menu state
+  // capture menu1 input changes, doo a buncha things
   const handleMenuChange = async (event) => {
     let { value } = event.target;
+    console.log(value)
+    chord1Selection = value
+    // pass values to chord2menu state
     getChord2List({ variables: {chord: value } });
+    // retrieve chord1 scribble text
+    getChord1Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
   };
   
   
@@ -45,38 +52,57 @@ const Home = () =>{
   }
 
 
+   /*/////////////////////////////////////
+  chord1 scribble code */
+  const [chord1Scribble, setChord1Scribble] = useState('')
+  const [getChord1Scribble, {data: scribble1}] = useLazyQuery(QUERY_SCRIBBLE, {
+    onCompleted: scribbleText => {
+      // if scribbleText exists for chosen chord...
+      if(scribbleText.getChordScribble){
+        setChord1Scribble(scribbleText.getChordScribble.scribbleText)
+      }else {
+        // reset scribble text box to empty string
+        setChord1Scribble('')
+      }
+    }
+  });
+  
+  // capture text input and mutate the db entry for this user.scribble.chord
+  const [updateChord1Scribble, { error }] = useMutation(MUTATION_CHORD_SCRIBBLE);
+  // capture scribble1 input changes, doo a buncha things
+  const handleScribble1Change = async (event) => {
+    let { value } = event.target;
+    console.log(value)
+    // try {
+    //   const { data } = await updateChord1Scribble({
+    //     variables: {  "username": username,
+    //     "scribbleText": value,
+    //     "scribbleBox": 1,
+    //     "chordName": chord1Selection },
+    //   });
+
+    // } catch (e) {
+    //   console.error(e);
+    // }
+    // // pass values to chord2menu state
+    // getChord2List({ variables: {chord: value } });
+    // // retrieve chord1 scribble text
+    // getChord1Scribble({ variables: {username: "michael3", scribbleBox: 1, chordName: value } })
+  };
+   /*/////////////////////////////////////
+   chord2 scribble code */
+
+
+
+
+   /*/////////////////////////////////////
+   chordpair scribble code */
+
+
+
+
+   
     const loggedIn = Auth.loggedIn();
-    
-    
-//Attempted to kickstart menu option, but code not working
-    // const Dropdown = ({
-    //   options
-    // }) => {
-    //   const [chord2MenuItems, setChord2MenuItems] = useState(options[0].chord);
-    //   return (
-    //       <select
-    //         value={chord2MenuItems}
-    //         onChange={e => setChord2MenuItems(e.target.chord)}>
-    //         {options.map(o => (
-    //           <option key={o.chord2MenuItems} value={chord2MenuItems}>{chord2MenuItems}</option>
-    //         ))}
-    //       </select>
-    //   );
-    // };
-    
-    // useEffect(() => {
-    //   setLoadingTypes(true);
-    //   FIRSTCHORD("DEFAULT");
-    //   const availableOptions = async () => {
-    //     const availableTypes = await Axios.get();
-        
-    //     if(availableTypes.data.length > 0) {
-    //       setAvailableTypes(availableTypes.data.map(FIRSTCHORD => ({name: chordTwoList})));
-    //       setLoadingTypes(false);
-    //     }
-    //   };
-    //   availableOptions();
-    // }, [FIRSTCHORD]);
 
     return (    
       <main>
@@ -116,7 +142,6 @@ const Home = () =>{
                       {
                         chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
                       }
-                      
                     </select>
                   </div>
                 </div>
@@ -135,7 +160,7 @@ const Home = () =>{
                   <div className="col-md-6">
                     {/* chord 1 scribble */}
                     <div className="form-outline">
-                      <textarea className="form-control" id="chord1Scribble" placeholder="Write your progress for Chord 1 here" rows="4"></textarea>
+                      <textarea onChange={handleScribble1Change}className="form-control" id="chord1Scribble" placeholder="Write your progress for Chord 1 here" rows="4" defaultValue={chord1Scribble} ></textarea>
                     
                     </div>
                   </div>

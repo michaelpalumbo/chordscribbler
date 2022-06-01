@@ -22,3 +22,16 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+export const MUTATION_CHORD_SCRIBBLE = gql`
+  mutation ChordScribble($username: String!, $scribbleText: String!, $scribbleBox: Int!, $chordName: String!) 
+  {
+    chordScribble(username: $username, scribbleText: $scribbleText, scribbleBox: $scribbleBox, chordName: $chordName) {
+      _id
+      username
+      scribbleText
+      scribbleBox
+      chordName
+    }
+  }
+`

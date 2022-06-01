@@ -1,61 +1,42 @@
 import { gql } from '@apollo/client';
 
+export const QUERY_GET_USERNAME_FROM_EMAIL = gql`
+  query GetUsernameFromEmail($email: String!) {
+    getUsernameFromEmail(email: $email) {
+      email
+      username
+    }
+  }
+`;
+
+
+
 export const QUERY_FIRST_CHORD = gql`
   query firstChord($chord: String!) {
     chordTwoList(chord: $chord) 
   } 
 `;
 
-export const FIRSTCHORD = gql`
-  query firstChord($chord: String!) {
-    chordTwoList(chord: $chord)
-}
-`;
-
-export const QUERY_USER = gql`
-  query user($username: String!) {
-    user(username: $username) {
-      _id
+export const QUERY_PAIR_SCRIBBLE = gql`
+  query GetChordPairScribble($username: String!, $scribbleBox: Int!, $chord1: String!, $chord2: String!) {
+    getChordPairScribble(username: $username, scribbleBox: $scribbleBox, chord1: $chord1, chord2: $chord2) {
+      scribbleBox
       username
-      email
-      friendCount
-      friends {
-        _id
-        username
-      }
-      thoughts {
-        _id
-        thoughtText
-        createdAt
-        reactionCount
-      }
+      chord1
+      chord2
+      scribbleText
     }
   }
 `;
 
-export const QUERY_ME = gql`
-  {
-    me {
+export const QUERY_SCRIBBLE = gql`
+  query Query($username: String!, $scribbleBox: Int!, $chordName: String!) {
+    getChordScribble(username: $username, scribbleBox: $scribbleBox, chordName: $chordName) {
       _id
       username
-      email
-      friendCount
-      thoughts {
-        _id
-        thoughtText
-        createdAt
-        reactionCount
-        reactions {
-          _id
-          createdAt
-          reactionBody
-          username
-        }
-      }
-      friends {
-        _id
-        username
-      }
+      scribbleText
+      scribbleBox
+      chordName
     }
   }
 `;

@@ -31,6 +31,10 @@ const resolvers = {
             .populate('friends')
             .populate('thoughts');
         },
+        // get a user by email
+        getUsernameFromEmail: async (parent, { email }) => {
+            return User.findOne({ email })
+        },
         chordTwoList: async (parent, {chord})=>{
             // user has selected this chord in drop-down menu 1
             return await JSON.stringify(MusicTheory.getChord2List(chord))
