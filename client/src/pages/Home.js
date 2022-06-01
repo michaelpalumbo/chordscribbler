@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { Dropdown, Input } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { useQuery } from '@apollo/client';
+import Select from 'react-select';
 // import { QUERY_THOUGHTS, QUERY_ME_BASIC } from '../utils/queries';
 // import chordScribbles from '../utils/chordScribbles'
 // import ScriptTag from 'react-script-tag';
@@ -10,8 +11,19 @@ import $ from "jquery"
 
 
 const Home = () =>{
-    const [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
+   
+  /*/////////////////////////////////////
+   chord1menu code */
+
+  // dropdown initial state
+  let [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
+   
+
+  
+  /*/////////////////////////////////////
+   chord2menu code */
     const [chord2MenuItems, setChord2MenuItems] = useState( [])
+
 
   // const { loading, data } = useQuery(QUERY_THOUGHTS);
   // const { data: userData } = useQuery(QUERY_ME_BASIC);
@@ -52,7 +64,7 @@ const Home = () =>{
                   </div>
                   <div className="col-md-6">
                     {/* Chord 2 Menu */}
-                    <select name="chord2Menu" id="chord2Menu">
+                    <select  name="chord2Menu" id="chord2Menu">
                         
                       {
                         chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
