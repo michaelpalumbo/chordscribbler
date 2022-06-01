@@ -47,6 +47,37 @@ const Home = () =>{
 
     const loggedIn = Auth.loggedIn();
     
+    
+//Attempted to kickstart menu option, but code not working
+    // const Dropdown = ({
+    //   options
+    // }) => {
+    //   const [chord2MenuItems, setChord2MenuItems] = useState(options[0].chord);
+    //   return (
+    //       <select
+    //         value={chord2MenuItems}
+    //         onChange={e => setChord2MenuItems(e.target.chord)}>
+    //         {options.map(o => (
+    //           <option key={o.chord2MenuItems} value={chord2MenuItems}>{chord2MenuItems}</option>
+    //         ))}
+    //       </select>
+    //   );
+    // };
+    
+    // useEffect(() => {
+    //   setLoadingTypes(true);
+    //   FIRSTCHORD("DEFAULT");
+    //   const availableOptions = async () => {
+    //     const availableTypes = await Axios.get();
+        
+    //     if(availableTypes.data.length > 0) {
+    //       setAvailableTypes(availableTypes.data.map(FIRSTCHORD => ({name: chordTwoList})));
+    //       setLoadingTypes(false);
+    //     }
+    //   };
+    //   availableOptions();
+    // }, [FIRSTCHORD]);
+
     return (    
       <main>
         <Helmet>
@@ -72,7 +103,7 @@ const Home = () =>{
                   <div className="col-md-6">
                     {/* Chord 1 Menu */}
                     <select onChange={handleMenuChange} name="chord1Menu" id="chord1Menu">
-                      
+                      <option disabled>Select Chord One</option>
                       {
                         chord1MenuItems.map(chord => <option value={chord}>{chord}</option>)
                       }
@@ -81,10 +112,11 @@ const Home = () =>{
                   <div className="col-md-6">
                     {/* Chord 2 Menu */}
                     <select name="chord2Menu" id="chord2Menu">
-                        
+                    <option disabled>Select Chord Two</option>
                       {
                         chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
                       }
+                      
                     </select>
                   </div>
                 </div>
@@ -137,6 +169,8 @@ const Home = () =>{
             </div>
           </div>
 
+          
+
         
         
         {/* </div> */}
@@ -151,3 +185,4 @@ const Home = () =>{
 
 
 export default Home;
+
