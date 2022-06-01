@@ -1,20 +1,18 @@
 const { Key } = require("@tonaljs/tonal");
 
 module.exports.getChord2List = (chord1) => {
-    let key = chord1.split(' ')[0]
-    let type = chord1.split(' ')[1]
-    switch(type){
-        case "major":
-            keyInfo = Key.majorKey(key)
-            // console.log(keyInfo.chords)
+    // chord1 could either be major and represented as "C", or minor and represented as "Cm"
+    let chord
+    let type = chord1.split('').slice(-1)[0]
+    if(type === 'm'){
+        chord = chord1.slice(0, -1)
+        keyInfo = Key.minorKey(chord)
+        return keyInfo.natural.chords
+        
+    }else {  
+        keyInfo = Key.majorKey(chord1)
         return keyInfo.chords
-
-        case "minor":
-            keyInfo = Key.minorKey(key)
-            // console.log(keyInfo.natural.chords)
-            return keyInfo.natural.chords
     }
-
 }
 // songs this chord progression is found in:
 // if I and IV are selected, send GET request to hooktheory api at ~/trends/songs?cp=4,1
