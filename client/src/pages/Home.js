@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, {useState} from 'react';
+import { Dropdown, Input } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { useQuery } from '@apollo/client';
 // import { QUERY_THOUGHTS, QUERY_ME_BASIC } from '../utils/queries';
@@ -8,12 +8,11 @@ import { useQuery } from '@apollo/client';
 import {Helmet} from "react-helmet";
 import $ from "jquery"
 
-import ChordOne from '../components/ChordOne/ChordOne.js';
 
+const Home = () =>{
+    const [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
+    const [chord2MenuItems, setChord2MenuItems] = useState( [])
 
-class Home extends React.Component {
- 
-  render() {
   // const { loading, data } = useQuery(QUERY_THOUGHTS);
   // const { data: userData } = useQuery(QUERY_ME_BASIC);
   // const thoughts = data?.thoughts || [];
@@ -36,41 +35,29 @@ class Home extends React.Component {
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossOrigin="anonymous"/>
 
         </Helmet>
-        
+
+
         <div className="container-fluid">
-            {/* <div className="row">
-              <div className="col-md-4"></div>
-              <div className="col-md-4">
-                <h1>ReCHORDr</h1>
-              </div>
-              <div className="col-md-4"></div>
-            </div> */}
             <div className="row">
               <div className="col-md-8">
-                
                 <div className="row">
                   <div className="col-md-6">
-                    <ChordOne></ChordOne>
-                    {/* <div className="dropdown">
+                    {/* Chord 1 Menu */}
+                    <select name="chord1Menu" id="chord1Menu">
                       
-                      <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                        Chord One
-                      </button>
-                      <div className="dropdown-menu chord1Menu" aria-labelledby="dropdownMenuButton">
-
-                      </div>
-                    </div> */}
+                      {
+                        chord1MenuItems.map(chord => <option value={chord}>{chord}</option>)
+                      }
+                    </select>
                   </div>
                   <div className="col-md-6">
-                    <div className="dropdown">
-                      
-                      <button className="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                        Chord Two
-                      </button>
-                      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {/* Chord 2 Menu */}
+                    <select name="chord2Menu" id="chord2Menu">
                         
-                      </div>
-                    </div>
+                      {
+                        chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
+                      }
+                    </select>
                   </div>
                 </div>
                 <div className="row">
@@ -92,8 +79,9 @@ class Home extends React.Component {
                     
                     </div>
                   </div>
-                
+                      
                   <div className="col-md-6">
+                    {/* chord 2 scribble */}
                     <div className="form-outline">
                       <textarea className="form-control" id="chord2Scribble" placeholder="Write your progress for Chord 2 here" rows="4"></textarea>
                     </div>
@@ -102,7 +90,7 @@ class Home extends React.Component {
                 <br></br>
                 <div className="row">
                   <div className="col-md-12">
-                    
+                    {/* chord pair scribble */}
                     <div className="form-outline">
                       <textarea className="form-control" id="chordPairScribble" placeholder="Write your progress for this chord pairing here" rows="6"></textarea>
                     </div>
@@ -110,6 +98,7 @@ class Home extends React.Component {
                 </div>
               </div>
               <div className="col-md-4">
+                {/* History panel */}
                 <h2>
                   History
                 </h2>
@@ -119,12 +108,16 @@ class Home extends React.Component {
               </div>
             </div>
           </div>
+
+        
+        
         {/* </div> */}
 
       </main>
 
     );
-  }
+  // }
+  
 };
 
 
