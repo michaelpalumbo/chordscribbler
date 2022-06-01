@@ -15,8 +15,10 @@ let chord1Selection, chord2Selection, username
 
 const Home = () =>{
   const [chord1Scribble, setChord1Scribble] = useState('')
+  const [chord2Scribble, setChord2Scribble] = useState('')
   const [chord2MenuItems, setChord2MenuItems] = useState( [])
   const [storeScribble1, { data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
+  const [storeScribble2, { scribble2Data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
 
 
 
@@ -38,9 +40,10 @@ const Home = () =>{
     }
   });
   // capture menu1 input changes, doo a buncha things
-  const handleMenuChange = async (event) => {
+  const handleMenu1Change = async (event) => {
+    // reset scribble text box to empty string
+    setChord1Scribble('')
     let { value } = event.target;
-    console.log(value)
     chord1Selection = value
     // pass values to chord2menu state
     getChord2List({ variables: {chord: value } });
@@ -53,30 +56,37 @@ const Home = () =>{
   /*/////////////////////////////////////
    chord2menu code */
   function populateChord2Menu(array){
+    // clear the select before repopulating
+    setChord2MenuItems([])
+    // populate:
     setChord2MenuItems(array)
   }
 
+    // capture menu1 input changes, doo a buncha things
+    const handleMenu2Change = async (event) => {
+      // reset scribble text box to empty string
+      setChord2Scribble('')
+      let { value } = event.target;
+      chord2Selection = value
+
+      // retrieve chord2 scribble text
+      getChord2Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
+    };
 
    /*/////////////////////////////////////
   chord1 scribble code */
   const [getChord1Scribble, {data: scribble1}] = useLazyQuery(QUERY_SCRIBBLE, {
     onCompleted: scribbleText => {
-      // reset scribble text box to empty string
-      setChord1Scribble('')
+      
       // if scribbleText exists for chosen chord...
       if(scribbleText.getChordScribble){
         
         setChord1Scribble(scribbleText.getChordScribble.scribbleText)
-      }else {
-        
       }
     }
   });
   
-  // capture text input and mutate the db entry for this user.scribble.chord
-  // const [updateChord1Scribble, { error }] = useMutation(MUTATION_CHORD_SCRIBBLE);
-  // capture scribble1 input changes, doo a buncha things
-
+  // capture scribble1 input changes, update db
   const handleScribble1Change = async (event) => {
     let { value } = event.target;
     console.log('text:', value)
@@ -86,26 +96,31 @@ const Home = () =>{
         "scribbleBox": 1,
         "chordName": chord1Selection },
       }) 
-
-    // try {
-    //   const { data } = await updateChord1Scribble({
-    //     variables: {  "username": username,
-    //     "scribbleText": value,
-    //     "scribbleBox": 1,
-    //     "chordName": chord1Selection },
-    //   });
-
-    // } catch (e) {
-    //   console.error(e);
-    // }
-    // // pass values to chord2menu state
-    // getChord2List({ variables: {chord: value } });
-    // // retrieve chord1 scribble text
-    // getChord1Scribble({ variables: {username: "michael3", scribbleBox: 1, chordName: value } })
   };
    /*/////////////////////////////////////
    chord2 scribble code */
+   const [getChord2Scribble, {data: scribble2}] = useLazyQuery(QUERY_SCRIBBLE, {
+    onCompleted: scribbleText => {
+      
+      // if scribbleText exists for chosen chord...
+      if(scribbleText.getChordScribble){
+        
+        setChord2Scribble(scribbleText.getChordScribble.scribbleText)
+      }
+    }
+  });
+  
+  // capture scribble1 input changes, update db
+  const handleScribble2Change = async (event) => {
+    let { value } = event.target;
+    console.log('text:', value)
 
+    storeScribble2({ variables: {  "username": username,
+        "scribbleText": value,
+        "scribbleBox": 2,
+        "chordName": chord1Selection },
+      }) 
+  };
 
 
 
@@ -142,8 +157,8 @@ const Home = () =>{
                 <div className="row">
                   <div className="col-md-6">
                     {/* Chord 1 Menu */}
-                    <select onChange={handleMenuChange} name="chord1Menu" id="chord1Menu">
-                      <option disabled>Select Chord One</option>
+                    <select onChange={handleMenu1Change} name="chord1Menu" id="chord1Menu">
+                      <option>Select Chord One</option>
                       {
                         chord1MenuItems.map(chord => <option value={chord}>{chord}</option>)
                       }
@@ -151,8 +166,8 @@ const Home = () =>{
                   </div>
                   <div className="col-md-6">
                     {/* Chord 2 Menu */}
-                    <select name="chord2Menu" id="chord2Menu">
-                    <option disabled>Select Chord Two</option>
+                    <select onChange={handleMenu2Change} name="chord2Menu" id="chord2Menu">
+                      <option>Select Chord Two</option>
                       {
                         chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
                       }
@@ -181,8 +196,10 @@ const Home = () =>{
                       
                   <div className="col-md-6">
                     {/* chord 2 scribble */}
-                    <div className="form-outline">
-                      <textarea className="form-control" id="chord2Scribble" placeholder="Write your progress for Chord 2 here" rows="4"></textarea>
+                      <div className="form-outline">
+                        <textarea onChange={handleScribble2Change}className="form-control" id="chord2Scribble" placeholder="Write your progress for Chord 2 here" rows="4" defaultValue={chord2Scribble} ></textarea>
+                      
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -206,7 +223,6 @@ const Home = () =>{
                 </div>
               </div>
             </div>
-          </div>
 
           
 
