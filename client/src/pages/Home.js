@@ -43,10 +43,10 @@ const Home = () =>{
   });
   const [getChord2Scribble, {data: scribble2}] = useLazyQuery(QUERY_SCRIBBLE, {
     onCompleted: scribbleText => {
-      
+      console.log(scribbleText.getChordScribble.scribbleText)
       // if scribbleText exists for chosen chord...
       if(scribbleText.getChordScribble){
-        
+        console.log(scribbleText.getChordScribble.scribbleText)
         setChord2Scribble(scribbleText.getChordScribble.scribbleText)
       }
     }
@@ -140,10 +140,11 @@ const Home = () =>{
       // reset scribble text box to empty string
       setChord2Scribble('')
       let { value } = event.target;
+      
       chord2Selection = value
 
       // retrieve chord2 scribble text
-      getChord2Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
+      getChord2Scribble({ variables: {username: username, scribbleBox: 2, chordName: value } })
 
       // update history panel
       let history = `${username} selected ${chord2Selection} for Chord Two`
@@ -177,10 +178,10 @@ const Home = () =>{
     let { value } = event.target;
     console.log('text:', value)
 
-    storeScribble2({ variables: {  "username": username,
-        "scribbleText": value,
-        "scribbleBox": 2,
-        "chordName": chord1Selection },
+    storeScribble2({ variables: {  username: username,
+        scribbleText: value,
+        scribbleBox: 2,
+        chordName: chord2Selection },
       }) 
   };
 
