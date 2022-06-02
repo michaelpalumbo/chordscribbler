@@ -125,9 +125,9 @@ const resolvers = {
              
              return newScribble
          },
-        updateHistory: async(parent, {username, scribbleText, scribbleBox, chordName}) => {
+        updateHistory: async(parent, {username, historyItem}) => {
             let timeStamp = new Date();
-            return await History.create({ username,scribbleText,scribbleBox,chordName, timeStamp });
+            return await History.create({ username, historyItem, timeStamp });
         }
         
       }

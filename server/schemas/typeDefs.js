@@ -24,9 +24,7 @@ const typeDefs = gql`
   type History{
     _id: ID
     username: String
-    scribbleText: String
-    scribbleBox: Int
-    chordName: String,
+    historyItem: String
     timeStamp: String
   }
 
@@ -55,7 +53,7 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     chordScribble(username: String!, scribbleText: String!,scribbleBox: Int!, chordName: String!): ChordScribble
     chordPairScribble(username: String!, scribbleText: String!,scribbleBox: Int!,chord1: String!, chord2: String!): ChordPairScribble
-    updateHistory(username: String!, scribbleText: String!,scribbleBox: Int!, chordName: String!, timeStamp: String): History
+    updateHistory(username: String!, historyItem: String!, timeStamp: String): History
     
   }
   type Auth {
