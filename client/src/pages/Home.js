@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Dropdown, Input } from 'react-bootstrap';
 import AuthService from '../utils/auth';
 import { useQuery, useLazyQuery, useMutation, createHttpLink } from '@apollo/client';
@@ -14,45 +14,86 @@ let chord1Selection, chord2Selection
 // we store the history in this, push to it and then send via the updateHistory mutation, and then use historyBuffer.join('\n') when updating the history panel state
 let historyBuffer = []
 const Home = () =>{
+  // STATE UPDATES
   const [chord1Scribble, setChord1Scribble] = useState('')
   const [chord2Scribble, setChord2Scribble] = useState('')
   const [chord2MenuItems, setChord2MenuItems] = useState( [])
   const [chord1Diagram, setChord1Diagram] = useState('')
   const [historyPanel, sethistoryPanel] = useState('')
+  
+  // MUTATIONS
   const [storeScribble1, { data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
   const [storeScribble2, { scribble2Data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
+  const [ saveHistoryData ] = useMutation(UPDATE_HISTORY);
+  // QUERIES
+  // USE A LAZYQUERY to run a query anytime after the component loads. in this case, use it to get the chord2List
+  const [getChord2List, {data: myValues}] = useLazyQuery(QUERY_FIRST_CHORD, {
+    onCompleted: someData => {
+      let chord2List = JSON.parse(someData.chordTwoList)
+      // populate chord2menu
+      populateChord2Menu(chord2List)
+    }
+  });
+  const [getChord1Scribble, {data: scribble1}] = useLazyQuery(QUERY_SCRIBBLE, {
+    onCompleted: scribbleText => {
+      // if scribbleText exists for chosen chord...
+      if(scribbleText.getChordScribble){
+        console.log(scribbleText.getChordScribble.scribbleText)
 
-
-  // ********Commented out Mutation Code for now
-  // const [ saveHistoryData ] = useMutation(UPDATE_HISTORY, {
-  //   variables: {
-  //     username: username,
-  //     historyItem: historyBuffer.join('\n')
-  //   }    
-  // });
-
+        setChord1Scribble(scribbleText.getChordScribble.scribbleText)
+      }
+    }
+  });
+  const [getChord2Scribble, {data: scribble2}] = useLazyQuery(QUERY_SCRIBBLE, {
+    onCompleted: scribbleText => {
+      
+      // if scribbleText exists for chosen chord...
+      if(scribbleText.getChordScribble){
+        
+        setChord2Scribble(scribbleText.getChordScribble.scribbleText)
+      }
+    }
+  });
+  const [getHistory, {data: fullHistory}] = useLazyQuery(QUERY_HISTORY, {
+    onCompleted: theHistory => {
+      console.log(theHistory)   
+      let h = theHistory.getHistory
+      console.log(h)
+      for(let i=0;i<h.length;i++){
+        historyBuffer.push(h[i].historyItem)
+      }
+      let history = historyBuffer.join('\n')
+      // update the panel
+      sethistoryPanel(history)
+      
+      // // if scribbleText exists for chosen chord...
+      // if(scribbleText.getChordScribble){
+        
+      //   setChord2Scribble(scribbleText.getChordScribble.scribbleText)
+      // }
+    }
+  });
+  
+  
+  // get history, inject it into the panel
+  useEffect(() => {
+    getHistory({variables: {username: username}})
+  }, [])
+  
   function updateHistory(string){
     if(string != null){     
-      historyBuffer.push(string)
+      historyBuffer.unshift(string)
       let history = historyBuffer.join('\n')
       // update the panel
       sethistoryPanel(history)
       // update the history in db
       // @echeta, pass var <string> thru mutation
+      saveHistoryData( { variables: {username: username, historyItem: string} });
     }
   
     // ********Commented out Mutation call for now
     // saveHistoryData();
   }
-
-
-
-
-
-
-
-
-
   
   /*/////////////////////////////////////
    first things first, get username by their email, as we need it for all mutations/queries */
@@ -63,14 +104,7 @@ const Home = () =>{
 
   // dropdown initial state
   let [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
-  // USE A LAZYQUERY to run a query anytime after the component loads. in this case, use it to get the chord2List
-  const [getChord2List, {data: myValues}] = useLazyQuery(QUERY_FIRST_CHORD, {
-    onCompleted: someData => {
-      let chord2List = JSON.parse(someData.chordTwoList)
-      // populate chord2menu
-      populateChord2Menu(chord2List)
-    }
-  });
+
 
   // setChord1Scribble('')
   // capture menu1 input changes, doo a buncha things
@@ -120,17 +154,7 @@ const Home = () =>{
 
    /*/////////////////////////////////////
   chord1 scribble code */
-  const [getChord1Scribble, {data: scribble1}] = useLazyQuery(QUERY_SCRIBBLE, {
-    onCompleted: scribbleText => {
-      // if scribbleText exists for chosen chord...
-      if(scribbleText.getChordScribble){
-        console.log(scribbleText.getChordScribble.scribbleText)
 
-        setChord1Scribble(scribbleText.getChordScribble.scribbleText)
-        
-      }
-    }
-  });
   
   // capture scribble1 input changes, update db
   const handleScribble1Change = async (event) => {
@@ -145,16 +169,7 @@ const Home = () =>{
   };
    /*/////////////////////////////////////
    chord2 scribble code */
-   const [getChord2Scribble, {data: scribble2}] = useLazyQuery(QUERY_SCRIBBLE, {
-    onCompleted: scribbleText => {
-      
-      // if scribbleText exists for chosen chord...
-      if(scribbleText.getChordScribble){
-        
-        setChord2Scribble(scribbleText.getChordScribble.scribbleText)
-      }
-    }
-  });
+
   
   // capture scribble1 input changes, update db
   const handleScribble2Change = async (event) => {
