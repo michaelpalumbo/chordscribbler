@@ -222,7 +222,7 @@ const Home = () =>{
                   History
                 </h2>
                 <div className="form-outline">
-                  <textarea className="form-control" id="chord2Scribble" placeholder="Your progress will be listed here" rows="30"></textarea>
+                  <textarea className="form-control" id="chordhistory" placeholder="Your progress will be listed here" rows="30"></textarea>
                 </div>
               </div>
             </div>

@@ -34,4 +34,17 @@ export const MUTATION_CHORD_SCRIBBLE = gql`
       chordName
     }
   }
-`
+`;
+
+
+export const UPDATE_HISTORY = gql`
+mutation UpdateHistory($username: String!, $scribbleText: String!, $scribbleBox: Int!, $chordName: String!) {
+  updateHistory(username: $username, scribbleText: $scribbleText, scribbleBox: $scribbleBox, chordName: $chordName) {
+    username
+    scribbleText
+    scribbleBox
+    chordName
+    timeStamp
+  }
+}
+`;
