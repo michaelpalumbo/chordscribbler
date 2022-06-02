@@ -201,84 +201,87 @@ const Home = () =>{
 
         </Helmet>
 
+     
 
-        <div className="container-fluid">
+          <div className="container-fluid">
             <div className="row">
-              <div className="col-md-8">
+              <div className="col">
                 <div className="row">
                   <div className="col-md-6">
-                    {/* Chord 1 Menu */}
-                    <select onChange={handleMenu1Change} name="chord1Menu" id="chord1Menu">
-                      <option>Select Chord One</option>
-                      {
-                        chord1MenuItems.map(chord => <option value={chord}>{chord}</option>)
-                      }
-                    </select>
-                  </div>
-                  <div className="col-md-6">
-                    {/* Chord 2 Menu */}
-                    <select onChange={handleMenu2Change} name="chord2Menu" id="chord2Menu">
-                      <option>Select Chord Two</option>
-                      {
-                        chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
-                      }
-                    </select>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    chord1 diagrams...
-                    <div>{chord1Diagram}</div>
-                    {/* <!-- this is where the chord1 diagrams will go. Michael will take care of this code soonish --> */}
-                  </div>
-                  <div className="col-md-6">
-                    chord2 diagrams...
-                    {/* <!-- this is where the chord2 diagrams will go. Michael will take care of this code soonish --> */}
-                  </div>
-                </div>
-                <br></br>
-                <div className="row">
-                  <div className="col-md-6">
-                    {/* chord 1 scribble */}
-                    <div className="form-outline">
+                    <div className="row">
+                      <div className="col">
+                         {/* Chord 1 Menu */}
+                          <select onChange={handleMenu1Change} name="chord1Menu" id="chord1Menu" class="form-select form-select-lg shadow-lg p-3 mb-5 bg-body rounded">
+                            <option>Select Chord One</option>
+                            {
+                              chord1MenuItems.map(chord => <option value={chord}>{chord}</option>)
+                            }
+                          </select>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        chord1 diagrams...
+                        <div>{chord1Diagram}</div>
+                        {/* <!-- this is where the chord1 diagrams will go. Michael will take care of this code soonish --> */}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                         {/* chord 1 scribble */}
+                    <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
                       <textarea onChange={handleScribble1Change}className="form-control" id="chord1Scribble" placeholder="Write your progress for Chord 1 here" rows="4" defaultValue={chord1Scribble} ></textarea>
-                    
+                    </div>
+                      </div>
                     </div>
                   </div>
-                      
                   <div className="col-md-6">
-                    {/* chord 2 scribble */}
-                      <div className="form-outline">
+                    <div className="row">
+                      <div className="col">
+                        {/* Chord 2 Menu */}
+                          <select onChange={handleMenu2Change} name="chord2Menu" id="chord2Menu" class="form-select form-select-lg mb-3 shadow-lg p-3 mb-5 bg-body rounded">
+                            <option>Select Chord Two</option>
+                            {
+                              chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
+                            }
+                          </select>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        chord2 diagrams...
+                      {/* <!-- this is where the chord2 diagrams will go. Michael will take care of this code soonish --> */}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        {/* chord 2 scribble */}
+                        <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
                         <textarea onChange={handleScribble2Change}className="form-control" id="chord2Scribble" placeholder="Write your progress for Chord 2 here" rows="4" defaultValue={chord2Scribble} ></textarea>
-                      
+                      </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <br></br>
                 <div className="row">
                   <div className="col-md-12">
                     {/* chord pair scribble */}
-                    <div className="form-outline">
+                    <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
                       <textarea className="form-control" id="chordPairScribble" placeholder="Write your progress for this chord pairing here" rows="6"></textarea>
                     </div>
                   </div>
-                </div>
+                </div>                  
               </div>
-              <div className="col-md-4">
-                {/* History panel */}
-                <h2>
-                  History
-                </h2>
-                <div className="form-outline">
+              <div className="col-md-4 alert alert-secondary" role="alert">
+                 {/* History panel */}
+                 <p class="text-center"><h4 class="alert-heading">Your History</h4></p>
+               
                   <textarea className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel}></textarea>
-                </div>
-              </div>
+            
+              </div> 
             </div>
-
-          
-
-        
+          </div>
+                   
         
         {/* </div> */}
 
