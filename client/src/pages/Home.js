@@ -122,10 +122,10 @@ const Home = () =>{
   chord1 scribble code */
   const [getChord1Scribble, {data: scribble1}] = useLazyQuery(QUERY_SCRIBBLE, {
     onCompleted: scribbleText => {
-      
       // if scribbleText exists for chosen chord...
       if(scribbleText.getChordScribble){
-        
+        console.log(scribbleText.getChordScribble.scribbleText)
+
         setChord1Scribble(scribbleText.getChordScribble.scribbleText)
         
       }
