@@ -51,6 +51,7 @@ const Home = () =>{
       
       // if scribbleText exists for chosen chord...
       if(scribbleText.getChordScribble){
+        console.log(scribbleText.getChordScribble.scribbleText)
         setChord2Scribble(scribbleText.getChordScribble.scribbleText)
       }
     }
@@ -181,54 +182,54 @@ const Home = () =>{
     setChord2MenuItems(array)
   }
 
-    // capture menu1 input changes, doo a buncha things
-    const handleMenu2Change = async (event) => {
-      // reset scribble text box to empty string
-      setChord2Scribble('')
-      let { value } = event.target;
+  // capture menu1 input changes, doo a buncha things
+  const handleMenu2Change = async (event) => {
+    // reset scribble text box to empty string
+    setChord2Scribble('')
+    let { value } = event.target;
+    
+    chord2Selection = value
+
+    // retrieve chord2 scribble text
+    getChord2Scribble({ variables: {username: username, scribbleBox: 2, chordName: value } })
+
+    // retrieve chordpair scribble
+    getChordPairScribble({ variables: {username: username, scribbleBox: 3, chord1: chord1Selection, chord2: chord2Selection } })
+    // update history panel
+    let history = `Chord Two: ${chord2Selection}`
+    updateHistory(history)
+    history = `Chord Pairing: ${chord1Selection} and ${chord2Selection}`
+    updateHistory(history)
+      if(value.includes('maj7')){
+        // hack, technically incorrect but needed for mvp
+        let key = value.slice(0, value.indexOf('maj7'))
+        value = key + '_maj7'
+      }
+      if(value.includes('m7')){
+        // hack, technically incorrect but needed for mvp
+        let key = value.slice(0, value.indexOf('m7'))
+        value = key + '_m7'
+      }
+      if(value.includes('m7b5')){
+        // hack, technically incorrect but needed for mvp
+        let key = value.slice(0, value.indexOf('m7b5'))
+        value = key + '_m7b5'
+      }
       
-      chord2Selection = value
-
-      // retrieve chord2 scribble text
-      getChord2Scribble({ variables: {username: username, scribbleBox: 2, chordName: value } })
-
-      // retrieve chordpair scribble
-      getChordPairScribble({ variables: {username: username, scribbleBox: 3, chord1: chord1Selection, chord2: chord2Selection } })
-      // update history panel
-      let history = `Chord Two: ${chord2Selection}`
-      updateHistory(history)
-      history = `Chord Pairing: ${chord1Selection} and ${chord2Selection}`
-      updateHistory(history)
-        if(value.includes('maj7')){
-          // hack, technically incorrect but needed for mvp
-          let key = value.slice(0, value.indexOf('maj7'))
-          value = key + '_maj7'
-        }
-        if(value.includes('m7')){
-          // hack, technically incorrect but needed for mvp
-          let key = value.slice(0, value.indexOf('m7'))
-          value = key + '_m7'
-        }
-        if(value.includes('m7b5')){
-          // hack, technically incorrect but needed for mvp
-          let key = value.slice(0, value.indexOf('m7b5'))
-          value = key + '_m7b5'
-        }
+        // get diagram
+      axios.get(`https://api.uberchord.com/v1/chords/${value}`)
+      .then(resp => {
         
-          // get diagram
-        axios.get(`https://api.uberchord.com/v1/chords/${value}`)
-        .then(resp => {
+        let fingering = resp.data[0].fingering.split( ' ')
           
-          let fingering = resp.data[0].fingering.split( ' ')
-           
-            setChord2Diagram(convertFingering(fingering))
-        })
-        .catch(err => {
-            // Handle Error Here
-            console.error(err);
-        });
-      
-    };
+          setChord2Diagram(convertFingering(fingering))
+      })
+      .catch(err => {
+          // Handle Error Here
+          console.error(err);
+      });
+    
+  };
 
    /*/////////////////////////////////////
   chord1 scribble code */
