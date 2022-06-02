@@ -7,17 +7,9 @@ const historySchema = new Schema(
             required: true,
             
         },
-        scribbleText: {
+        historyItem: {
             type: String,
-            required: 'You need to have a ScribbleText',
-        },
-        scribbleBox: {
-            type: Number,
-            required: true
-        },
-        chordName: {
-            type: String,
-            required: true
+            required: 'You need to have a historyItem',
         },
         timeStamp:{
             type: Date,

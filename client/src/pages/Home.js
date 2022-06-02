@@ -8,30 +8,41 @@ import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY } from '../utils/mutations';
 // import chordScribbles from '../utils/chordScribbles'
 // import ScriptTag from 'react-script-tag';
 import {Helmet} from "react-helmet";
-import decode from 'jwt-decode';
+
 let username = localStorage.getItem('username');
-
-
 let chord1Selection, chord2Selection
-
+// we store the history in this, push to it and then send via the updateHistory mutation, and then use historyBuffer.join('\n') when updating the history panel state
+let historyBuffer = []
 const Home = () =>{
   const [chord1Scribble, setChord1Scribble] = useState('')
   const [chord2Scribble, setChord2Scribble] = useState('')
   const [chord2MenuItems, setChord2MenuItems] = useState( [])
+  const [chord1Diagram, setChord1Diagram] = useState('')
+  const [historyPanel, sethistoryPanel] = useState('')
   const [storeScribble1, { data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
   const [storeScribble2, { scribble2Data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
 
   // History Form State
   //const [historyForm, setHistoryForm] = useState('');
   const historyData = useQuery(username, QUERY_HISTORY);
+  
+  function updateHistory(string){
+    if(string != null){
+      let s = string + '\n'
+      historyBuffer.push(s)
+      let history = historyBuffer.join('\n')
+      // update the panel
+      sethistoryPanel(history)
+      // update the history in db
+      console.log(historyBuffer)
+    }
 
-
+  }
+  
   /*/////////////////////////////////////
    first things first, get username by their email, as we need it for all mutations/queries */
- // username = Auth.getProfile().data.username
-  // Local STorage(username)
-
-
+  // username = Auth.getProfile().data.username
+  
   /*/////////////////////////////////////
    chord1menu code */
 
@@ -45,6 +56,8 @@ const Home = () =>{
       populateChord2Menu(chord2List)
     }
   });
+
+  // setChord1Scribble('')
   // capture menu1 input changes, doo a buncha things
   const handleMenu1Change = async (event) => {
     // reset scribble text box to empty string
@@ -55,6 +68,10 @@ const Home = () =>{
     getChord2List({ variables: {chord: value } });
     // retrieve chord1 scribble text
     getChord1Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
+    // update history panel
+    let history = `${username} selected ${chord1Selection} for Chord One`
+    updateHistory(history)
+  
   };
   
   
@@ -77,6 +94,13 @@ const Home = () =>{
 
       // retrieve chord2 scribble text
       getChord2Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
+
+      // update history panel
+      let history = `${username} selected ${chord2Selection} for Chord Two`
+      updateHistory(history)
+      history = `${username} selected pairing of ${chord1Selection} and ${chord2Selection}`
+      updateHistory(history)
+      
     };
 
    /*/////////////////////////////////////
@@ -142,6 +166,8 @@ const Home = () =>{
     return (    
       <main>
         <Helmet>
+         {/* chord diagrams api BEGIN THIS NEEDS TO STAY UP HERE */}
+        <script async type="text/javascript" src="https://www.scales-chords.com/api/scales-chords-api.js"></script>
           <script
           src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         
@@ -183,6 +209,7 @@ const Home = () =>{
                 <div className="row">
                   <div className="col-md-6">
                     chord1 diagrams...
+                    <div>{chord1Diagram}</div>
                     {/* <!-- this is where the chord1 diagrams will go. Michael will take care of this code soonish --> */}
                   </div>
                   <div className="col-md-6">
@@ -225,7 +252,7 @@ const Home = () =>{
                   History
                 </h2>
                 <div className="form-outline">
-                  <textarea className="form-control" id="chordhistory" placeholder="Your progress will be listed here" rows="30"></textarea>
+                  <textarea className="form-control" id="chord2Scribble" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel}></textarea>
                 </div>
               </div>
             </div>
