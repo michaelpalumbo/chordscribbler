@@ -89,6 +89,7 @@ const resolvers = {
             return { token, user };
         },
         chordScribble : async (parent, {username,scribbleText,scribbleBox,chordName}) =>{
+            console.log(username,scribbleText,scribbleBox,chordName)
            let newScribble 
             const chordScribble = await ChordScribble.findOne({ username,scribbleBox,chordName });
                 if (chordScribble) {
@@ -107,6 +108,7 @@ const resolvers = {
             return newScribble
         },
         chordPairScribble : async (parent, {username,scribbleText,scribbleBox,chord1,chord2}) =>{
+            console.log(username,scribbleText,scribbleBox,chord1,chord2)
             let newScribble 
              const chordPairScribble = await ChordPairScribble.findOne({ username,scribbleBox,chord1,chord2 });
                  if (chordPairScribble) {
