@@ -290,8 +290,8 @@ const Home = () =>{
               <div className="col-md-4 alert alert-secondary" role="alert">
                  {/* History panel */}
                  <p class="text-center"><h4 class="alert-heading">Your History</h4></p>
-               
-                  <textarea className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel}></textarea>
+                  
+                  <textarea readonly className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel}></textarea>
             
               </div> 
             </div>
