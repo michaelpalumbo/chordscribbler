@@ -24,7 +24,7 @@ const Home = () =>{
 
   // History Form State
   //const [historyForm, setHistoryForm] = useState('');
-  const historyData = useQuery(username, QUERY_HISTORY);
+  //const historyData = useQuery(username, QUERY_HISTORY);
   
   function updateHistory(string){
     if(string != null){
