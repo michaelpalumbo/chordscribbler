@@ -96,7 +96,8 @@ const Home = () =>{
   useEffect(() => {
     getHistory({variables: {username: username}})
     // test fetch
-    
+    setChord1Diagram([0,0,0,0,0,0])
+    setChord2Diagram([0,0,0,0,0,0])
   }, [])
 
 
