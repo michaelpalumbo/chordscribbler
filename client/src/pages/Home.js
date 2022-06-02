@@ -3,8 +3,8 @@ import { Dropdown, Input } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import Select from 'react-select';
-import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL } from '../utils/queries';
-import { MUTATION_CHORD_SCRIBBLE } from '../utils/mutations';
+import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY } from '../utils/queries';
+import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY } from '../utils/mutations';
 // import chordScribbles from '../utils/chordScribbles'
 // import ScriptTag from 'react-script-tag';
 import {Helmet} from "react-helmet";
