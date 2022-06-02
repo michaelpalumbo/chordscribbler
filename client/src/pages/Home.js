@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Dropdown, Input } from 'react-bootstrap';
 import AuthService from '../utils/auth';
-import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
+import { useQuery, useLazyQuery, useMutation, createHttpLink } from '@apollo/client';
 import Select from 'react-select';
 import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY } from '../utils/queries';
 import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY } from '../utils/mutations';
@@ -23,6 +23,13 @@ const Home = () =>{
   const [storeScribble2, { scribble2Data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
 
 
+  // ********Commented out Mutation Code for now
+  // const [ saveHistoryData ] = useMutation(UPDATE_HISTORY, {
+  //   variables: {
+  //     username: username,
+  //     historyItem: historyBuffer.join('\n')
+  //   }    
+  // });
 
   function updateHistory(string){
     if(string != null){     
@@ -33,7 +40,19 @@ const Home = () =>{
       // update the history in db
       // @echeta, pass var <string> thru mutation
     }
+  
+    // ********Commented out Mutation call for now
+    // saveHistoryData();
   }
+
+
+
+
+
+
+
+
+
   
   /*/////////////////////////////////////
    first things first, get username by their email, as we need it for all mutations/queries */
