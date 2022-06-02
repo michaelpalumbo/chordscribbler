@@ -5,6 +5,7 @@ import { useQuery, useLazyQuery, useMutation, createHttpLink } from '@apollo/cli
 import Select from 'react-select';
 import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY } from '../utils/queries';
 import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY } from '../utils/mutations';
+import Moment from 'react-moment';
 // import chordScribbles from '../utils/chordScribbles'
 // import ScriptTag from 'react-script-tag';
 import {Helmet} from "react-helmet";
@@ -54,6 +55,7 @@ const Home = () =>{
       }
     }
   });
+
   const [getHistory, {data: fullHistory}] = useLazyQuery(QUERY_HISTORY, {
     onCompleted: theHistory => {
       console.log(theHistory)   
@@ -82,13 +84,15 @@ const Home = () =>{
   
   function updateHistory(string){
     if(string != null){     
-      historyBuffer.unshift(string)
+      let timestamp = Moment().format('MMMM Do YYYY, h:mm a');
+      let str = `${timestamp}: ${string}`
+      historyBuffer.unshift(str)
       let history = historyBuffer.join('\n')
       // update the panel
       sethistoryPanel(history)
       // update the history in db
       // @echeta, pass var <string> thru mutation
-      saveHistoryData( { variables: {username: username, historyItem: string} });
+      saveHistoryData( { variables: {username: username, historyItem: str} });
     }
   
     // ********Commented out Mutation call for now
@@ -290,8 +294,8 @@ const Home = () =>{
               <div className="col-md-4 alert alert-secondary" role="alert">
                  {/* History panel */}
                  <p class="text-center"><h4 class="alert-heading">Your History</h4></p>
-               
-                  <textarea className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel} readonly></textarea>
+                  
+                  <textarea readonly className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel}></textarea>
             
               </div> 
             </div>
