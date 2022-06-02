@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Dropdown, Input } from 'react-bootstrap';
-import Auth from '../utils/auth';
+import AuthService from '../utils/auth';
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import Select from 'react-select';
 import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY } from '../utils/queries';
@@ -21,6 +21,9 @@ const Home = () =>{
   const [storeScribble1, { data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
   const [storeScribble2, { scribble2Data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
 
+  // History Form State
+  //const [historyForm, setHistoryForm] = useState('');
+  const historyData = useQuery(username, QUERY_HISTORY);
 
 
   /*/////////////////////////////////////
@@ -134,7 +137,7 @@ const Home = () =>{
 
 
    
-    const loggedIn = Auth.loggedIn();
+    const loggedIn = AuthService.loggedIn();
 
     return (    
       <main>
