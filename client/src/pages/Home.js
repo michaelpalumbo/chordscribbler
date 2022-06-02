@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import { Dropdown, Input } from 'react-bootstrap';
 import AuthService from '../utils/auth';
 import { useQuery, useLazyQuery, useMutation, createHttpLink } from '@apollo/client';
-import Select from 'react-select';
 import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY } from '../utils/queries';
 import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY } from '../utils/mutations';
-import Moment from 'react-moment';
-// import chordScribbles from '../utils/chordScribbles'
-// import ScriptTag from 'react-script-tag';
+import moment from 'moment'
 import {Helmet} from "react-helmet";
 
 let username = localStorage.getItem('username');
@@ -64,7 +60,7 @@ const Home = () =>{
       for(let i=0;i<h.length;i++){
         historyBuffer.push(h[i].historyItem)
       }
-      let history = historyBuffer.join('\n')
+      let history = historyBuffer.join('\n---------------\n')
       // update the panel
       sethistoryPanel(history)
       
@@ -84,10 +80,10 @@ const Home = () =>{
   
   function updateHistory(string){
     if(string != null){     
-      let timestamp = Moment().format('MMMM Do YYYY, h:mm a');
+      let timestamp = moment().format('MMMM Do YYYY, h:mm a');
       let str = `${timestamp}: ${string}`
       historyBuffer.unshift(str)
-      let history = historyBuffer.join('\n')
+      let history = historyBuffer.join('\n---------------\n')
       // update the panel
       sethistoryPanel(history)
       // update the history in db
