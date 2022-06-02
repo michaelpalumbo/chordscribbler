@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import AuthService from '../utils/auth';
 import { useQuery, useLazyQuery, useMutation, createHttpLink } from '@apollo/client';
-import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY, QUERY_CHORD_PAIR_SCRIBBLE } from '../utils/queries';
+import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_HISTORY } from '../utils/queries';
 import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY, MUTATION_CHORD_PAIR_SCRIBBLE } from '../utils/mutations';
 import moment from 'moment'
 import {Helmet} from "react-helmet";
-
+import GuitarChord from 'react-guitar-chords';
+const axios = require('axios').default;
 let username = localStorage.getItem('username');
 let chord1Selection, chord2Selection
 // we store the history in this, push to it and then send via the updateHistory mutation, and then use historyBuffer.join('\n') when updating the history panel state
@@ -16,7 +17,8 @@ const Home = () =>{
   const [chord2Scribble, setChord2Scribble] = useState('')
   const [chordPairScribble, setChordPairScribble] = useState('')
   const [chord2MenuItems, setChord2MenuItems] = useState( [])
-  const [chord1Diagram, setChord1Diagram] = useState('')
+  const [chord1Diagram, setChord1Diagram] = useState([])
+  const [chord2Diagram, setChord2Diagram] = useState([])
   const [historyPanel, sethistoryPanel] = useState('')
   
   // MUTATIONS
@@ -28,6 +30,7 @@ const Home = () =>{
   // USE A LAZYQUERY to run a query anytime after the component loads. in this case, use it to get the chord2List
   const [getChord2List, {data: myValues}] = useLazyQuery(QUERY_FIRST_CHORD, {
     onCompleted: someData => {
+    
       let chord2List = JSON.parse(someData.chordTwoList)
       // populate chord2menu
       populateChord2Menu(chord2List)
@@ -37,7 +40,7 @@ const Home = () =>{
     onCompleted: scribbleText => {
       // if scribbleText exists for chosen chord...
       if(scribbleText.getChordScribble){
-        console.log(scribbleText.getChordScribble.scribbleText)
+        
 
         setChord1Scribble(scribbleText.getChordScribble.scribbleText)
       }
@@ -45,7 +48,7 @@ const Home = () =>{
   });
   const [getChord2Scribble, {data: scribble2}] = useLazyQuery(QUERY_SCRIBBLE, {
     onCompleted: scribbleText => {
-      console.log(scribbleText.getChordScribble.scribbleText)
+      
       // if scribbleText exists for chosen chord...
       if(scribbleText.getChordScribble){
         console.log(scribbleText.getChordScribble.scribbleText)
@@ -56,13 +59,12 @@ const Home = () =>{
   const [getChordPairScribble, {data: chordPairScribbleReturn}] = useLazyQuery(QUERY_PAIR_SCRIBBLE, {
     onCompleted: scribbleText => {
       // if scribbleText exists for chosen chord...
-      console.log(scribbleText.getChordPairScribble)
+      
       if(scribbleText.getChordPairScribble){
-        console.log(scribbleText.getChordPairScribble.scribbleText)
+        
         setChordPairScribble(scribbleText.getChordPairScribble.scribbleText)
       }
       // if(scribbleText.getChordScribble){
-      //   console.log(scribbleText.getChordScribble.scribbleText)
 
       //   setChord1Scribble(scribbleText.getChordScribble.scribbleText)
       // }
@@ -87,12 +89,17 @@ const Home = () =>{
       // }
     }
   });
-  
+
+  // const { get, post, response, loading, error } = useFetch(fetchUrl)
   
   // get history, inject it into the panel
   useEffect(() => {
     getHistory({variables: {username: username}})
+    // test fetch
+    
   }, [])
+
+
   
   function updateHistory(string){
     if(string != null){     
@@ -106,15 +113,8 @@ const Home = () =>{
       // @echeta, pass var <string> thru mutation
       saveHistoryData( { variables: {username: username, historyItem: str} });
     }
-  
-    // ********Commented out Mutation call for now
-    // saveHistoryData();
   }
-  
-  /*/////////////////////////////////////
-   first things first, get username by their email, as we need it for all mutations/queries */
-  // username = Auth.getProfile().data.username
-  
+
   /*/////////////////////////////////////
    chord1menu code */
 
@@ -128,19 +128,50 @@ const Home = () =>{
     // reset scribble text box to empty string
     setChord1Scribble('')
     let { value } = event.target;
-    console.log(value)
+   
     chord1Selection = value
     // pass values to chord2menu state
     getChord2List({ variables: {chord: value } });
     // retrieve chord1 scribble text
     getChord1Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
     // update history panel
-    let history = `${username} selected ${chord1Selection} for Chord One`
+    let history = `Chord One: ${chord1Selection}`
     updateHistory(history)
+
+    // get diagram
+    if(value.includes('m')){
+      // hack, technically incorrect but needed for mvp
+      let key = value.slice(0, value.indexOf('m7'))
+      value = key + '_m'
+    }
+    axios.get(`https://api.uberchord.com/v1/chords/${value}`)
+    .then(resp => {
+        let fingering = resp.data[0].fingering.split( ' ')
+        
+        setChord1Diagram(convertFingering(fingering))
+    })
+    .catch(err => {
+        // Handle Error Here
+        console.error(err);
+    });
   
   };
   
-  
+  function convertFingering(fingers){
+      let convertedFingering = []
+      for(let i=0;i<fingers.length; i++){
+          let finger;
+          if(fingers[i] === 'X'){
+              finger = 'x'
+          } else {
+              finger = Number.parseInt(fingers[i], 10)
+              // 
+             
+          }
+          convertedFingering.push(finger)
+      }
+      return convertedFingering
+    }
 
   /*/////////////////////////////////////
    chord2menu code */
@@ -151,26 +182,54 @@ const Home = () =>{
     setChord2MenuItems(array)
   }
 
-    // capture menu1 input changes, doo a buncha things
-    const handleMenu2Change = async (event) => {
-      // reset scribble text box to empty string
-      setChord2Scribble('')
-      let { value } = event.target;
-      
-      chord2Selection = value
+  // capture menu1 input changes, doo a buncha things
+  const handleMenu2Change = async (event) => {
+    // reset scribble text box to empty string
+    setChord2Scribble('')
+    let { value } = event.target;
+    
+    chord2Selection = value
 
-      // retrieve chord2 scribble text
-      getChord2Scribble({ variables: {username: username, scribbleBox: 2, chordName: value } })
+    // retrieve chord2 scribble text
+    getChord2Scribble({ variables: {username: username, scribbleBox: 2, chordName: value } })
 
-      // retrieve chordpair scribble
-      getChordPairScribble({ variables: {username: username, scribbleBox: 3, chord1: chord1Selection, chord2: chord2Selection } })
-      // update history panel
-      let history = `${username} selected ${chord2Selection} for Chord Two`
-      updateHistory(history)
-      history = `${username} selected pairing of ${chord1Selection} and ${chord2Selection}`
-      updateHistory(history)
+    // retrieve chordpair scribble
+    getChordPairScribble({ variables: {username: username, scribbleBox: 3, chord1: chord1Selection, chord2: chord2Selection } })
+    // update history panel
+    let history = `Chord Two: ${chord2Selection}`
+    updateHistory(history)
+    history = `Chord Pairing: ${chord1Selection} and ${chord2Selection}`
+    updateHistory(history)
+      if(value.includes('maj7')){
+        // hack, technically incorrect but needed for mvp
+        let key = value.slice(0, value.indexOf('maj7'))
+        value = key + '_maj7'
+      }
+      if(value.includes('m7')){
+        // hack, technically incorrect but needed for mvp
+        let key = value.slice(0, value.indexOf('m7'))
+        value = key + '_m7'
+      }
+      if(value.includes('m7b5')){
+        // hack, technically incorrect but needed for mvp
+        let key = value.slice(0, value.indexOf('m7b5'))
+        value = key + '_m7b5'
+      }
       
-    };
+        // get diagram
+      axios.get(`https://api.uberchord.com/v1/chords/${value}`)
+      .then(resp => {
+        
+        let fingering = resp.data[0].fingering.split( ' ')
+          
+          setChord2Diagram(convertFingering(fingering))
+      })
+      .catch(err => {
+          // Handle Error Here
+          console.error(err);
+      });
+    
+  };
 
    /*/////////////////////////////////////
   chord1 scribble code */
@@ -179,7 +238,7 @@ const Home = () =>{
   // capture scribble1 input changes, update db
   const handleScribble1Change = async (event) => {
     let { value } = event.target;
-    console.log('text:', value)
+   
 
     storeScribble1({ variables: {  "username": username,
         "scribbleText": value,
@@ -194,7 +253,7 @@ const Home = () =>{
   // capture scribble1 input changes, update db
   const handleScribble2Change = async (event) => {
     let { value } = event.target;
-    console.log('text:', value)
+   
 
     storeScribble2({ variables: {  username: username,
         scribbleText: value,
@@ -210,9 +269,8 @@ const Home = () =>{
 
    /*/////////////////////////////////////
    chordpair scribble code */
-  const handlePairScibbleChange = async(event) => {
+  const handlePairScribbleChange = async(event) => {
     let {value} = event.target;
-    console.log(value)
     // do the query
     storeChordPairScribble({ variables: {
       username: username,
@@ -223,7 +281,6 @@ const Home = () =>{
     },
       }) 
   }
-
 
 
    
@@ -268,8 +325,11 @@ const Home = () =>{
                     </div>
                     <div className="row">
                       <div className="col">
-                        chord1 diagrams...
-                        <div>{chord1Diagram}</div>
+                      <GuitarChord
+                        // chordName='Cm'
+                        frets={chord1Diagram}
+                      />
+                        {/* <div>{chord1Diagram}</div> */}
                         {/* <!-- this is where the chord1 diagrams will go. Michael will take care of this code soonish --> */}
                       </div>
                     </div>
@@ -296,7 +356,10 @@ const Home = () =>{
                     </div>
                     <div className="row">
                       <div className="col">
-                        chord2 diagrams...
+                      <GuitarChord
+                        // chordName='Cm'
+                        frets={chord2Diagram}
+                      />
                       {/* <!-- this is where the chord2 diagrams will go. Michael will take care of this code soonish --> */}
                       </div>
                     </div>
@@ -314,7 +377,7 @@ const Home = () =>{
                   <div className="col-md-12">
                     {/* chord pair scribble */}
                     <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
-                      <textarea className="form-control" onChange={handlePairScibbleChange}id="chordPairScribble" placeholder="Write your progress for this chord pairing here" defaultValue={chordPairScribble} rows="6"></textarea>
+                      <textarea className="form-control" onChange={handlePairScribbleChange}id="chordPairScribble" placeholder="Write your progress for this chord pairing here" defaultValue={chordPairScribble} rows="6"></textarea>
                     </div>
                   </div>
                 </div>                  
