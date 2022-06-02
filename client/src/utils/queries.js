@@ -55,3 +55,17 @@ export const QUERY_ME_BASIC = gql`
     }
   }
 `;
+
+
+export const QUERY_HISTORY = gql`
+query GetHistory($username: String!) {
+  getHistory(username: $username) {
+    _id
+    username
+    scribbleText
+    scribbleBox
+    chordName
+    timeStamp
+  }
+}
+`;
