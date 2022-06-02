@@ -69,9 +69,3 @@ export const QUERY_FIRST_CHORD = gql`
     chordTwoList(chord: $chord) 
   } 
 `;
-
-export const QUERY_GET_CHORD_FINGERING = gql`
-query GetChordFingering($chordName: String) {
-  getChordFingering(chordName: $chordName) 
-}
-`

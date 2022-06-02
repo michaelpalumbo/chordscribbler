@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import AuthService from '../utils/auth';
 import { useQuery, useLazyQuery, useMutation, createHttpLink } from '@apollo/client';
-import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_CHORD_FINGERING, QUERY_HISTORY } from '../utils/queries';
+import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_HISTORY } from '../utils/queries';
 import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY, MUTATION_CHORD_PAIR_SCRIBBLE } from '../utils/mutations';
 import moment from 'moment'
 import {Helmet} from "react-helmet";
@@ -51,7 +51,6 @@ const Home = () =>{
       
       // if scribbleText exists for chosen chord...
       if(scribbleText.getChordScribble){
-        console.log(scribbleText.getChordScribble.scribbleText)
         setChord2Scribble(scribbleText.getChordScribble.scribbleText)
       }
     }
@@ -65,7 +64,6 @@ const Home = () =>{
         setChordPairScribble(scribbleText.getChordPairScribble.scribbleText)
       }
       // if(scribbleText.getChordScribble){
-      //   console.log(scribbleText.getChordScribble.scribbleText)
 
       //   setChord1Scribble(scribbleText.getChordScribble.scribbleText)
       // }
@@ -222,7 +220,7 @@ const Home = () =>{
         .then(resp => {
           
           let fingering = resp.data[0].fingering.split( ' ')
-            console.log(convertFingering(fingering));
+           
             setChord2Diagram(convertFingering(fingering))
         })
         .catch(err => {
@@ -239,7 +237,7 @@ const Home = () =>{
   // capture scribble1 input changes, update db
   const handleScribble1Change = async (event) => {
     let { value } = event.target;
-    console.log('text:', value)
+   
 
     storeScribble1({ variables: {  "username": username,
         "scribbleText": value,
@@ -254,7 +252,7 @@ const Home = () =>{
   // capture scribble1 input changes, update db
   const handleScribble2Change = async (event) => {
     let { value } = event.target;
-    console.log('text:', value)
+   
 
     storeScribble2({ variables: {  username: username,
         scribbleText: value,
@@ -270,9 +268,8 @@ const Home = () =>{
 
    /*/////////////////////////////////////
    chordpair scribble code */
-  const handlePairScibbleChange = async(event) => {
+  const handlePairScribbleChange = async(event) => {
     let {value} = event.target;
-    console.log(value)
     // do the query
     storeChordPairScribble({ variables: {
       username: username,
@@ -379,7 +376,7 @@ const Home = () =>{
                   <div className="col-md-12">
                     {/* chord pair scribble */}
                     <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
-                      <textarea className="form-control" onChange={handlePairScibbleChange}id="chordPairScribble" placeholder="Write your progress for this chord pairing here" defaultValue={chordPairScribble} rows="6"></textarea>
+                      <textarea className="form-control" onChange={handlePairScribbleChange}id="chordPairScribble" placeholder="Write your progress for this chord pairing here" defaultValue={chordPairScribble} rows="6"></textarea>
                     </div>
                   </div>
                 </div>                  

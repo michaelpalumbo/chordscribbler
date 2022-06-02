@@ -40,7 +40,6 @@ const typeDefs = gql`
     user(username: String!): User
     getUsernameFromEmail(email: String!): User
     chordTwoList(chord: String!): String
-    getChordFingering(chordName: String): String
     getChordScribble(username: String!,scribbleBox: Int!,chordName: String!): ChordScribble
     getChordHighlighting(username: String!, scribbleBox: Int): [ChordScribble]
     getChordPairHighlighting(username: String!): [ChordPairScribble]

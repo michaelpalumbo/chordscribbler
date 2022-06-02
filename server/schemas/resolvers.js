@@ -70,37 +70,7 @@ const resolvers = {
             console.log(choice)
             return choice
         },
-        getChordFingering: async (parent, {chordName})=>{
-            let convertedFingering = []
-            console.log(chordName)
-            axios.get(`https://api.uberchord.com/v1/chords/${chordName}`)
-                .then(resp => {
-                    console.log(resp.data);
-                })
-                .catch(err => {
-                    // Handle Error Here
-                    console.error(err);
-                });
-            // fetch(`https://api.uberchord.com/v1/chords/${chordName}`)
-            // .then(res => res.json())
-            // .then(json => {
-            //     // console.log(json[0].fingering)
-            //     let fingering = json[0].fingering.split( ' ')
-            //     for(let i=0;i<fingering.length; i++){
-            //         let finger;
-            //         if(fingering[i] === 'X'){
-            //             finger = 'x'
-            //         } else {
-            //             finger = Number.parseInt(fingering[i], 10)
-            //             // 
-            //             // console.log(typeof finger, Number.parseInt(finger, 10))
-            //         }
-            //         convertedFingering.push(finger)
-            //     }
-            //     console.log(JSON.stringify(convertedFingering))
-            //     return JSON.stringify(json)
-            // })
-        },
+
     },
     
     Mutation: {
