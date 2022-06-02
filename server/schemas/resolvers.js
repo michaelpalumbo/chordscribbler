@@ -3,6 +3,10 @@ const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const { Key } = require("@tonaljs/tonal");
 const MusicTheory = require('../modules/MusicTheory.js')
+const ChordDiagrams = require('../modules/ChordDiagrams.js')
+const fetch = require('node-fetch');
+const axios = require('axios').default;
+
 
 const resolvers = {
     Query: {
@@ -35,10 +39,7 @@ const resolvers = {
         getUsernameFromEmail: async (parent, { email }) => {
             return User.findOne({ email })
         },
-        chordTwoList: async (parent, {chord})=>{
-            // user has selected this chord in drop-down menu 1
-            return await JSON.stringify(MusicTheory.getChord2List(chord))
-        },
+
         getChordScribble : async (parent, {username,scribbleBox,chordName}) =>{
 
             return await ChordScribble.findOne({ username,scribbleBox,chordName });
@@ -62,6 +63,43 @@ const resolvers = {
         getChordPairScribble : async (parent, {username,scribbleBox,chord1,chord2}) =>{
 
             return await ChordPairScribble.findOne({ username,scribbleBox,chord1,chord2 });
+        },
+        chordTwoList: async (parent, {chord})=>{
+            // user has selected this chord in drop-down menu 1
+            let choice = await JSON.stringify(MusicTheory.getChord2List(chord))
+            console.log(choice)
+            return choice
+        },
+        getChordFingering: async (parent, {chordName})=>{
+            let convertedFingering = []
+            console.log(chordName)
+            axios.get(`https://api.uberchord.com/v1/chords/${chordName}`)
+                .then(resp => {
+                    console.log(resp.data);
+                })
+                .catch(err => {
+                    // Handle Error Here
+                    console.error(err);
+                });
+            // fetch(`https://api.uberchord.com/v1/chords/${chordName}`)
+            // .then(res => res.json())
+            // .then(json => {
+            //     // console.log(json[0].fingering)
+            //     let fingering = json[0].fingering.split( ' ')
+            //     for(let i=0;i<fingering.length; i++){
+            //         let finger;
+            //         if(fingering[i] === 'X'){
+            //             finger = 'x'
+            //         } else {
+            //             finger = Number.parseInt(fingering[i], 10)
+            //             // 
+            //             // console.log(typeof finger, Number.parseInt(finger, 10))
+            //         }
+            //         convertedFingering.push(finger)
+            //     }
+            //     console.log(JSON.stringify(convertedFingering))
+            //     return JSON.stringify(json)
+            // })
         },
     },
     
