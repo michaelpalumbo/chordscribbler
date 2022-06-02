@@ -36,7 +36,8 @@ export const QUERY_SCRIBBLE = gql`
       username
       scribbleText
       scribbleBox
-      chordName
+      chord1
+      chord2
     }
   }
 `;

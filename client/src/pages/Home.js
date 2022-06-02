@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import AuthService from '../utils/auth';
 import { useQuery, useLazyQuery, useMutation, createHttpLink } from '@apollo/client';
-import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY } from '../utils/queries';
-import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY } from '../utils/mutations';
+import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY, QUERY_CHORD_PAIR_SCRIBBLE } from '../utils/queries';
+import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY, MUTATION_CHORD_PAIR_SCRIBBLE } from '../utils/mutations';
 import moment from 'moment'
 import {Helmet} from "react-helmet";
 
@@ -14,6 +14,7 @@ const Home = () =>{
   // STATE UPDATES
   const [chord1Scribble, setChord1Scribble] = useState('')
   const [chord2Scribble, setChord2Scribble] = useState('')
+  const [chordPairScribble, setChordPairScribble] = useState('')
   const [chord2MenuItems, setChord2MenuItems] = useState( [])
   const [chord1Diagram, setChord1Diagram] = useState('')
   const [historyPanel, sethistoryPanel] = useState('')
@@ -21,6 +22,7 @@ const Home = () =>{
   // MUTATIONS
   const [storeScribble1, { data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
   const [storeScribble2, { scribble2Data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
+  const [storeChordPairScribble, { data: chordPairScribbles }] = useMutation(MUTATION_CHORD_PAIR_SCRIBBLE);
   const [ saveHistoryData ] = useMutation(UPDATE_HISTORY);
   // QUERIES
   // USE A LAZYQUERY to run a query anytime after the component loads. in this case, use it to get the chord2List
@@ -51,7 +53,21 @@ const Home = () =>{
       }
     }
   });
+  const [getChordPairScribble, {data: chordPairScribbleReturn}] = useLazyQuery(QUERY_PAIR_SCRIBBLE, {
+    onCompleted: scribbleText => {
+      // if scribbleText exists for chosen chord...
+      console.log(scribbleText.getChordPairScribble)
+      if(scribbleText.getChordPairScribble){
+        console.log(scribbleText.getChordPairScribble.scribbleText)
+        setChordPairScribble(scribbleText.getChordPairScribble.scribbleText)
+      }
+      // if(scribbleText.getChordScribble){
+      //   console.log(scribbleText.getChordScribble.scribbleText)
 
+      //   setChord1Scribble(scribbleText.getChordScribble.scribbleText)
+      // }
+    }
+  });
   const [getHistory, {data: fullHistory}] = useLazyQuery(QUERY_HISTORY, {
     onCompleted: theHistory => {
         
@@ -146,6 +162,8 @@ const Home = () =>{
       // retrieve chord2 scribble text
       getChord2Scribble({ variables: {username: username, scribbleBox: 2, chordName: value } })
 
+      // retrieve chordpair scribble
+      getChordPairScribble({ variables: {username: username, scribbleBox: 3, chord1: chord1Selection, chord2: chord2Selection } })
       // update history panel
       let history = `${username} selected ${chord2Selection} for Chord Two`
       updateHistory(history)
@@ -192,7 +210,19 @@ const Home = () =>{
 
    /*/////////////////////////////////////
    chordpair scribble code */
-
+  const handlePairScibbleChange = async(event) => {
+    let {value} = event.target;
+    console.log(value)
+    // do the query
+    storeChordPairScribble({ variables: {
+      username: username,
+      scribbleText: value,
+      scribbleBox: 3,
+      chord1: chord1Selection,
+      chord2: chord2Selection
+    },
+      }) 
+  }
 
 
 
@@ -284,14 +314,14 @@ const Home = () =>{
                   <div className="col-md-12">
                     {/* chord pair scribble */}
                     <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
-                      <textarea className="form-control" id="chordPairScribble" placeholder="Write your progress for this chord pairing here" rows="6"></textarea>
+                      <textarea className="form-control" onChange={handlePairScibbleChange}id="chordPairScribble" placeholder="Write your progress for this chord pairing here" defaultValue={chordPairScribble} rows="6"></textarea>
                     </div>
                   </div>
                 </div>                  
               </div>
               <div className="col-md-4 alert alert-secondary" role="alert">
                  {/* History panel */}
-                 <p class="text-center"><h4 class="alert-heading">Your History</h4></p>
+                 <p class="text-center"><h4 class="alert-heading">{username}'s History</h4></p>
                   
                   <textarea readonly className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel}></textarea>
             
