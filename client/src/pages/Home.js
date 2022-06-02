@@ -22,18 +22,17 @@ const Home = () =>{
   const [storeScribble1, { data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
   const [storeScribble2, { scribble2Data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
 
-  
+
+
   function updateHistory(string){
-    if(string != null){
-      let s = string + '\n'
-      historyBuffer.push(s)
+    if(string != null){     
+      historyBuffer.push(string)
       let history = historyBuffer.join('\n')
       // update the panel
       sethistoryPanel(history)
       // update the history in db
-      console.log(historyBuffer)
+      // @echeta, pass var <string> thru mutation
     }
-
   }
   
   /*/////////////////////////////////////
@@ -109,6 +108,7 @@ const Home = () =>{
       if(scribbleText.getChordScribble){
         
         setChord1Scribble(scribbleText.getChordScribble.scribbleText)
+        
       }
     }
   });
@@ -149,7 +149,10 @@ const Home = () =>{
       }) 
   };
 
-
+  // todo get enter/return and when user clicks outside of textarea to fire the updateHistory for that line in the textarea
+  // update history panel
+  // let history = `${username} added note to ${chord1Selection}: ${scribbleText.getChordScribble.scribbleText}`
+  // updateHistory(history)
 
    /*/////////////////////////////////////
    chordpair scribble code */
