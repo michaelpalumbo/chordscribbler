@@ -54,9 +54,9 @@ const Home = () =>{
 
   const [getHistory, {data: fullHistory}] = useLazyQuery(QUERY_HISTORY, {
     onCompleted: theHistory => {
-      console.log(theHistory)   
+        
       let h = theHistory.getHistory
-      console.log(h)
+      
       for(let i=0;i<h.length;i++){
         historyBuffer.push(h[i].historyItem)
       }
@@ -112,6 +112,7 @@ const Home = () =>{
     // reset scribble text box to empty string
     setChord1Scribble('')
     let { value } = event.target;
+    console.log(value)
     chord1Selection = value
     // pass values to chord2menu state
     getChord2List({ variables: {chord: value } });
