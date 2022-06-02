@@ -11,11 +11,6 @@ export const QUERY_GET_USERNAME_FROM_EMAIL = gql`
 
 
 
-export const QUERY_FIRST_CHORD = gql`
-  query firstChord($chord: String!) {
-    chordTwoList(chord: $chord) 
-  } 
-`;
 
 export const QUERY_PAIR_SCRIBBLE = gql`
   query GetChordPairScribble($username: String!, $scribbleBox: Int!, $chord1: String!, $chord2: String!) {
@@ -65,4 +60,11 @@ query GetHistory($username: String!) {
     historyItem
   }
 }
+`;
+
+
+export const QUERY_FIRST_CHORD = gql`
+  query firstChord($chord: String!) {
+    chordTwoList(chord: $chord) 
+  } 
 `;

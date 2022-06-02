@@ -36,6 +36,18 @@ export const MUTATION_CHORD_SCRIBBLE = gql`
   }
 `;
 
+export const MUTATION_CHORD_PAIR_SCRIBBLE = gql`
+  mutation ChordPairScribble($username: String!, $scribbleText: String!, $scribbleBox: Int!, $chord1: String!, $chord2: String!) {
+    chordPairScribble(username: $username, scribbleText: $scribbleText, scribbleBox: $scribbleBox, chord1: $chord1, chord2: $chord2) {
+      username
+      scribbleText
+      scribbleBox
+      chord1
+      chord2
+    }
+  }
+`
+
 
 export const UPDATE_HISTORY = gql`
 mutation UpdateHistory($username: String!, $historyItem: String!) {

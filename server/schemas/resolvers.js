@@ -3,6 +3,10 @@ const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const { Key } = require("@tonaljs/tonal");
 const MusicTheory = require('../modules/MusicTheory.js')
+const ChordDiagrams = require('../modules/ChordDiagrams.js')
+const fetch = require('node-fetch');
+const axios = require('axios').default;
+
 
 const resolvers = {
     Query: {
@@ -35,10 +39,7 @@ const resolvers = {
         getUsernameFromEmail: async (parent, { email }) => {
             return User.findOne({ email })
         },
-        chordTwoList: async (parent, {chord})=>{
-            // user has selected this chord in drop-down menu 1
-            return await JSON.stringify(MusicTheory.getChord2List(chord))
-        },
+
         getChordScribble : async (parent, {username,scribbleBox,chordName}) =>{
 
             return await ChordScribble.findOne({ username,scribbleBox,chordName });
@@ -63,6 +64,13 @@ const resolvers = {
 
             return await ChordPairScribble.findOne({ username,scribbleBox,chord1,chord2 });
         },
+        chordTwoList: async (parent, {chord})=>{
+            // user has selected this chord in drop-down menu 1
+            let choice = await JSON.stringify(MusicTheory.getChord2List(chord))
+            console.log(choice)
+            return choice
+        },
+
     },
     
     Mutation: {
@@ -89,6 +97,7 @@ const resolvers = {
             return { token, user };
         },
         chordScribble : async (parent, {username,scribbleText,scribbleBox,chordName}) =>{
+            console.log(username,scribbleText,scribbleBox,chordName)
            let newScribble 
             const chordScribble = await ChordScribble.findOne({ username,scribbleBox,chordName });
                 if (chordScribble) {
@@ -107,6 +116,7 @@ const resolvers = {
             return newScribble
         },
         chordPairScribble : async (parent, {username,scribbleText,scribbleBox,chord1,chord2}) =>{
+            console.log(username,scribbleText,scribbleBox,chord1,chord2)
             let newScribble 
              const chordPairScribble = await ChordPairScribble.findOne({ username,scribbleBox,chord1,chord2 });
                  if (chordPairScribble) {
