@@ -9,6 +9,7 @@ const Login = (props) => {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error }] = useMutation(LOGIN_USER);
 
+
   // update state based on form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -23,12 +24,15 @@ const Login = (props) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    
     try {
       const { data } = await login({
         variables: { ...formState },
       });
 
-      AuthService.login(data.login.token);
+      AuthService.login(data.login.token); 
+      // Code to save Username in local storage
+      localStorage.setItem('username',data.login.user.username );
     } catch (e) {
       console.error(e);
     }
@@ -40,7 +44,8 @@ const Login = (props) => {
     });
   };
   
- 
+
+  
   
 
   return (
