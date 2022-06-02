@@ -106,15 +106,8 @@ const Home = () =>{
       // @echeta, pass var <string> thru mutation
       saveHistoryData( { variables: {username: username, historyItem: str} });
     }
-  
-    // ********Commented out Mutation call for now
-    // saveHistoryData();
   }
-  
-  /*/////////////////////////////////////
-   first things first, get username by their email, as we need it for all mutations/queries */
-  // username = Auth.getProfile().data.username
-  
+
   /*/////////////////////////////////////
    chord1menu code */
 
@@ -135,7 +128,7 @@ const Home = () =>{
     // retrieve chord1 scribble text
     getChord1Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
     // update history panel
-    let history = `${username} selected ${chord1Selection} for Chord One`
+    let history = `Chord One: ${chord1Selection}`
     updateHistory(history)
   
   };
@@ -165,9 +158,9 @@ const Home = () =>{
       // retrieve chordpair scribble
       getChordPairScribble({ variables: {username: username, scribbleBox: 3, chord1: chord1Selection, chord2: chord2Selection } })
       // update history panel
-      let history = `${username} selected ${chord2Selection} for Chord Two`
+      let history = `Chord Two: ${chord2Selection}`
       updateHistory(history)
-      history = `${username} selected pairing of ${chord1Selection} and ${chord2Selection}`
+      history = `Chord Pairing: ${chord1Selection} and ${chord2Selection}`
       updateHistory(history)
       
     };
