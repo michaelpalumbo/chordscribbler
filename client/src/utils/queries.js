@@ -36,7 +36,8 @@ export const QUERY_SCRIBBLE = gql`
       username
       scribbleText
       scribbleBox
-      chordName
+      chord1
+      chord2
     }
   }
 `;
@@ -54,4 +55,15 @@ export const QUERY_ME_BASIC = gql`
       }
     }
   }
+`;
+
+
+export const QUERY_HISTORY = gql`
+query GetHistory($username: String!) {
+  getHistory(username: $username) {
+    _id
+    username
+    historyItem
+  }
+}
 `;

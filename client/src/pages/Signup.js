@@ -15,7 +15,7 @@ const Signup = () => {
   // update state based on form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
-
+   
     setFormState({
       ...formState,
       [name]: value,
@@ -25,18 +25,23 @@ const Signup = () => {
   // submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-      console.log('foo')
+    
+     localStorage.setItem('username',formState.username );
     try {
       const { data } = await addUser({
         variables: { ...formState },
       });
+  
 
       AuthService.login(data.addUser.token);
     } catch (e) {
       console.error(e);
     }
   };
+ 
 
+  
+  
   return (
     <main className="flex-row justify-center mb-4">
       <div className="col-12 col-md-6">

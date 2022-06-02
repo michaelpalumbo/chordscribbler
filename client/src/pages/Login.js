@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 
 import AuthService from '../utils/auth';
+import { QUERY_GET_USERNAME_FROM_EMAIL } from '../utils/queries';
 
 const Login = (props) => {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error }] = useMutation(LOGIN_USER);
+
 
   // update state based on form input changes
   const handleChange = (event) => {
@@ -22,12 +24,15 @@ const Login = (props) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    
     try {
       const { data } = await login({
         variables: { ...formState },
       });
 
-      AuthService.login(data.login.token);
+      AuthService.login(data.login.token); 
+      // Code to save Username in local storage
+      localStorage.setItem('username',data.login.user.username );
     } catch (e) {
       console.error(e);
     }
@@ -38,6 +43,10 @@ const Login = (props) => {
       password: '',
     });
   };
+  
+
+  
+  
 
   return (
     <main className="flex-row justify-center mb-4">

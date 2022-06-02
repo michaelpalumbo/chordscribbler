@@ -56,7 +56,6 @@ const resolvers = {
         
         getHistory: async (parent, {username})=>{
             let foo = await History.find({username})
-            
             return foo.reverse()
         },
 
@@ -90,6 +89,7 @@ const resolvers = {
             return { token, user };
         },
         chordScribble : async (parent, {username,scribbleText,scribbleBox,chordName}) =>{
+            console.log(username,scribbleText,scribbleBox,chordName)
            let newScribble 
             const chordScribble = await ChordScribble.findOne({ username,scribbleBox,chordName });
                 if (chordScribble) {
@@ -108,6 +108,7 @@ const resolvers = {
             return newScribble
         },
         chordPairScribble : async (parent, {username,scribbleText,scribbleBox,chord1,chord2}) =>{
+            console.log(username,scribbleText,scribbleBox,chord1,chord2)
             let newScribble 
              const chordPairScribble = await ChordPairScribble.findOne({ username,scribbleBox,chord1,chord2 });
                  if (chordPairScribble) {
@@ -125,9 +126,9 @@ const resolvers = {
              
              return newScribble
          },
-        updateHistory: async(parent, {username, scribbleText, scribbleBox, chordName}) => {
+        updateHistory: async(parent, {username, historyItem}) => {
             let timeStamp = new Date();
-            return await History.create({ username,scribbleText,scribbleBox,chordName, timeStamp });
+            return await History.create({ username, historyItem, timeStamp });
         }
         
       }

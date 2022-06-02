@@ -1,35 +1,30 @@
-import React, {useState} from 'react';
-import { Dropdown, Input } from 'react-bootstrap';
-import Auth from '../utils/auth';
-import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
-import Select from 'react-select';
-import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL } from '../utils/queries';
-import { MUTATION_CHORD_SCRIBBLE } from '../utils/mutations';
-// import chordScribbles from '../utils/chordScribbles'
-// import ScriptTag from 'react-script-tag';
+import React, {useEffect, useState} from 'react';
+import AuthService from '../utils/auth';
+import { useQuery, useLazyQuery, useMutation, createHttpLink } from '@apollo/client';
+import { QUERY_FIRST_CHORD, QUERY_SCRIBBLE, QUERY_PAIR_SCRIBBLE, QUERY_GET_USERNAME_FROM_EMAIL, QUERY_HISTORY, QUERY_CHORD_PAIR_SCRIBBLE } from '../utils/queries';
+import { MUTATION_CHORD_SCRIBBLE, UPDATE_HISTORY, MUTATION_CHORD_PAIR_SCRIBBLE } from '../utils/mutations';
+import moment from 'moment'
 import {Helmet} from "react-helmet";
 
-
-let chord1Selection, chord2Selection, username
-
+let username = localStorage.getItem('username');
+let chord1Selection, chord2Selection
+// we store the history in this, push to it and then send via the updateHistory mutation, and then use historyBuffer.join('\n') when updating the history panel state
+let historyBuffer = []
 const Home = () =>{
+  // STATE UPDATES
   const [chord1Scribble, setChord1Scribble] = useState('')
   const [chord2Scribble, setChord2Scribble] = useState('')
+  const [chordPairScribble, setChordPairScribble] = useState('')
   const [chord2MenuItems, setChord2MenuItems] = useState( [])
+  const [chord1Diagram, setChord1Diagram] = useState('')
+  const [historyPanel, sethistoryPanel] = useState('')
+  
+  // MUTATIONS
   const [storeScribble1, { data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
   const [storeScribble2, { scribble2Data }] = useMutation(MUTATION_CHORD_SCRIBBLE);
-
-
-
-  /*/////////////////////////////////////
-   first things first, get username by their email, as we need it for all mutations/queries */
-  // username = Auth.getProfile().data.username
-  
-  /*/////////////////////////////////////
-   chord1menu code */
-
-  // dropdown initial state
-  let [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
+  const [storeChordPairScribble, { data: chordPairScribbles }] = useMutation(MUTATION_CHORD_PAIR_SCRIBBLE);
+  const [ saveHistoryData ] = useMutation(UPDATE_HISTORY);
+  // QUERIES
   // USE A LAZYQUERY to run a query anytime after the component loads. in this case, use it to get the chord2List
   const [getChord2List, {data: myValues}] = useLazyQuery(QUERY_FIRST_CHORD, {
     onCompleted: someData => {
@@ -38,16 +33,104 @@ const Home = () =>{
       populateChord2Menu(chord2List)
     }
   });
+  const [getChord1Scribble, {data: scribble1}] = useLazyQuery(QUERY_SCRIBBLE, {
+    onCompleted: scribbleText => {
+      // if scribbleText exists for chosen chord...
+      if(scribbleText.getChordScribble){
+        console.log(scribbleText.getChordScribble.scribbleText)
+
+        setChord1Scribble(scribbleText.getChordScribble.scribbleText)
+      }
+    }
+  });
+  const [getChord2Scribble, {data: scribble2}] = useLazyQuery(QUERY_SCRIBBLE, {
+    onCompleted: scribbleText => {
+      console.log(scribbleText.getChordScribble.scribbleText)
+      // if scribbleText exists for chosen chord...
+      if(scribbleText.getChordScribble){
+        console.log(scribbleText.getChordScribble.scribbleText)
+        setChord2Scribble(scribbleText.getChordScribble.scribbleText)
+      }
+    }
+  });
+  const [getChordPairScribble, {data: chordPairScribbleReturn}] = useLazyQuery(QUERY_PAIR_SCRIBBLE, {
+    onCompleted: scribbleText => {
+      // if scribbleText exists for chosen chord...
+      console.log(scribbleText.getChordPairScribble)
+      if(scribbleText.getChordPairScribble){
+        console.log(scribbleText.getChordPairScribble.scribbleText)
+        setChordPairScribble(scribbleText.getChordPairScribble.scribbleText)
+      }
+      // if(scribbleText.getChordScribble){
+      //   console.log(scribbleText.getChordScribble.scribbleText)
+
+      //   setChord1Scribble(scribbleText.getChordScribble.scribbleText)
+      // }
+    }
+  });
+  const [getHistory, {data: fullHistory}] = useLazyQuery(QUERY_HISTORY, {
+    onCompleted: theHistory => {
+        
+      let h = theHistory.getHistory
+      
+      for(let i=0;i<h.length;i++){
+        historyBuffer.push(h[i].historyItem)
+      }
+      let history = historyBuffer.join('\n---------------\n')
+      // update the panel
+      sethistoryPanel(history)
+      
+      // // if scribbleText exists for chosen chord...
+      // if(scribbleText.getChordScribble){
+        
+      //   setChord2Scribble(scribbleText.getChordScribble.scribbleText)
+      // }
+    }
+  });
+  
+  
+  // get history, inject it into the panel
+  useEffect(() => {
+    getHistory({variables: {username: username}})
+  }, [])
+  
+  function updateHistory(string){
+    if(string != null){     
+      let timestamp = moment().format('MMMM Do YYYY, h:mm a');
+      let str = `${timestamp}: ${string}`
+      historyBuffer.unshift(str)
+      let history = historyBuffer.join('\n---------------\n')
+      // update the panel
+      sethistoryPanel(history)
+      // update the history in db
+      // @echeta, pass var <string> thru mutation
+      saveHistoryData( { variables: {username: username, historyItem: str} });
+    }
+  }
+
+  /*/////////////////////////////////////
+   chord1menu code */
+
+  // dropdown initial state
+  let [chord1MenuItems, setChord1MenuItems] = useState( ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "Cm", "Dbm", "Dm", "Ebm", "Em", "Fm", "Gbm", "Gm", "Abm", "Am", "Bbm", "Bm"])
+
+
+  // setChord1Scribble('')
   // capture menu1 input changes, doo a buncha things
   const handleMenu1Change = async (event) => {
     // reset scribble text box to empty string
     setChord1Scribble('')
     let { value } = event.target;
+    console.log(value)
     chord1Selection = value
     // pass values to chord2menu state
     getChord2List({ variables: {chord: value } });
     // retrieve chord1 scribble text
     getChord1Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
+    // update history panel
+    let history = `Chord One: ${chord1Selection}`
+    updateHistory(history)
+  
   };
   
   
@@ -66,24 +149,25 @@ const Home = () =>{
       // reset scribble text box to empty string
       setChord2Scribble('')
       let { value } = event.target;
+      
       chord2Selection = value
 
       // retrieve chord2 scribble text
-      getChord2Scribble({ variables: {username: username, scribbleBox: 1, chordName: value } })
+      getChord2Scribble({ variables: {username: username, scribbleBox: 2, chordName: value } })
+
+      // retrieve chordpair scribble
+      getChordPairScribble({ variables: {username: username, scribbleBox: 3, chord1: chord1Selection, chord2: chord2Selection } })
+      // update history panel
+      let history = `Chord Two: ${chord2Selection}`
+      updateHistory(history)
+      history = `Chord Pairing: ${chord1Selection} and ${chord2Selection}`
+      updateHistory(history)
+      
     };
 
    /*/////////////////////////////////////
   chord1 scribble code */
-  const [getChord1Scribble, {data: scribble1}] = useLazyQuery(QUERY_SCRIBBLE, {
-    onCompleted: scribbleText => {
-      
-      // if scribbleText exists for chosen chord...
-      if(scribbleText.getChordScribble){
-        
-        setChord1Scribble(scribbleText.getChordScribble.scribbleText)
-      }
-    }
-  });
+
   
   // capture scribble1 input changes, update db
   const handleScribble1Change = async (event) => {
@@ -98,39 +182,45 @@ const Home = () =>{
   };
    /*/////////////////////////////////////
    chord2 scribble code */
-   const [getChord2Scribble, {data: scribble2}] = useLazyQuery(QUERY_SCRIBBLE, {
-    onCompleted: scribbleText => {
-      
-      // if scribbleText exists for chosen chord...
-      if(scribbleText.getChordScribble){
-        
-        setChord2Scribble(scribbleText.getChordScribble.scribbleText)
-      }
-    }
-  });
+
   
   // capture scribble1 input changes, update db
   const handleScribble2Change = async (event) => {
     let { value } = event.target;
     console.log('text:', value)
 
-    storeScribble2({ variables: {  "username": username,
-        "scribbleText": value,
-        "scribbleBox": 2,
-        "chordName": chord1Selection },
+    storeScribble2({ variables: {  username: username,
+        scribbleText: value,
+        scribbleBox: 2,
+        chordName: chord2Selection },
       }) 
   };
 
-
+  // todo get enter/return and when user clicks outside of textarea to fire the updateHistory for that line in the textarea
+  // update history panel
+  // let history = `${username} added note to ${chord1Selection}: ${scribbleText.getChordScribble.scribbleText}`
+  // updateHistory(history)
 
    /*/////////////////////////////////////
    chordpair scribble code */
-
+  const handlePairScibbleChange = async(event) => {
+    let {value} = event.target;
+    console.log(value)
+    // do the query
+    storeChordPairScribble({ variables: {
+      username: username,
+      scribbleText: value,
+      scribbleBox: 3,
+      chord1: chord1Selection,
+      chord2: chord2Selection
+    },
+      }) 
+  }
 
 
 
    
-    const loggedIn = Auth.loggedIn();
+    const loggedIn = AuthService.loggedIn();
 
     return (    
       <main>
@@ -151,83 +241,87 @@ const Home = () =>{
 
         </Helmet>
 
+     
 
-        <div className="container-fluid">
+          <div className="container-fluid">
             <div className="row">
-              <div className="col-md-8">
+              <div className="col">
                 <div className="row">
                   <div className="col-md-6">
-                    {/* Chord 1 Menu */}
-                    <select onChange={handleMenu1Change} name="chord1Menu" id="chord1Menu">
-                      <option>Select Chord One</option>
-                      {
-                        chord1MenuItems.map(chord => <option value={chord}>{chord}</option>)
-                      }
-                    </select>
-                  </div>
-                  <div className="col-md-6">
-                    {/* Chord 2 Menu */}
-                    <select onChange={handleMenu2Change} name="chord2Menu" id="chord2Menu">
-                      <option>Select Chord Two</option>
-                      {
-                        chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
-                      }
-                    </select>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    chord1 diagrams...
-                    {/* <!-- this is where the chord1 diagrams will go. Michael will take care of this code soonish --> */}
-                  </div>
-                  <div className="col-md-6">
-                    chord2 diagrams...
-                    {/* <!-- this is where the chord2 diagrams will go. Michael will take care of this code soonish --> */}
-                  </div>
-                </div>
-                <br></br>
-                <div className="row">
-                  <div className="col-md-6">
-                    {/* chord 1 scribble */}
-                    <div className="form-outline">
+                    <div className="row">
+                      <div className="col">
+                         {/* Chord 1 Menu */}
+                          <select onChange={handleMenu1Change} name="chord1Menu" id="chord1Menu" class="form-select form-select-lg shadow-lg p-3 mb-5 bg-body rounded">
+                            <option>Select Chord One</option>
+                            {
+                              chord1MenuItems.map(chord => <option value={chord}>{chord}</option>)
+                            }
+                          </select>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        chord1 diagrams...
+                        <div>{chord1Diagram}</div>
+                        {/* <!-- this is where the chord1 diagrams will go. Michael will take care of this code soonish --> */}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                         {/* chord 1 scribble */}
+                    <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
                       <textarea onChange={handleScribble1Change}className="form-control" id="chord1Scribble" placeholder="Write your progress for Chord 1 here" rows="4" defaultValue={chord1Scribble} ></textarea>
-                    
+                    </div>
+                      </div>
                     </div>
                   </div>
-                      
                   <div className="col-md-6">
-                    {/* chord 2 scribble */}
-                      <div className="form-outline">
+                    <div className="row">
+                      <div className="col">
+                        {/* Chord 2 Menu */}
+                          <select onChange={handleMenu2Change} name="chord2Menu" id="chord2Menu" class="form-select form-select-lg mb-3 shadow-lg p-3 mb-5 bg-body rounded">
+                            <option>Select Chord Two</option>
+                            {
+                              chord2MenuItems.map(chord => <option value={chord}>{chord}</option>)
+                            }
+                          </select>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        chord2 diagrams...
+                      {/* <!-- this is where the chord2 diagrams will go. Michael will take care of this code soonish --> */}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        {/* chord 2 scribble */}
+                        <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
                         <textarea onChange={handleScribble2Change}className="form-control" id="chord2Scribble" placeholder="Write your progress for Chord 2 here" rows="4" defaultValue={chord2Scribble} ></textarea>
-                      
+                      </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <br></br>
                 <div className="row">
                   <div className="col-md-12">
                     {/* chord pair scribble */}
-                    <div className="form-outline">
-                      <textarea className="form-control" id="chordPairScribble" placeholder="Write your progress for this chord pairing here" rows="6"></textarea>
+                    <div className="form-outline shadow-lg p-3 mb-5 bg-body rounded">
+                      <textarea className="form-control" onChange={handlePairScibbleChange}id="chordPairScribble" placeholder="Write your progress for this chord pairing here" defaultValue={chordPairScribble} rows="6"></textarea>
                     </div>
                   </div>
-                </div>
+                </div>                  
               </div>
-              <div className="col-md-4">
-                {/* History panel */}
-                <h2>
-                  History
-                </h2>
-                <div className="form-outline">
-                  <textarea className="form-control" id="chord2Scribble" placeholder="Your progress will be listed here" rows="30"></textarea>
-                </div>
-              </div>
+              <div className="col-md-4 alert alert-secondary" role="alert">
+                 {/* History panel */}
+                 <p class="text-center"><h4 class="alert-heading">{username}'s History</h4></p>
+                  
+                  <textarea readonly className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel}></textarea>
+            
+              </div> 
             </div>
-
-          
-
-        
+          </div>
+                   
         
         {/* </div> */}
 
