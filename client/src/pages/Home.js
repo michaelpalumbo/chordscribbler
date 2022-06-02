@@ -8,7 +8,6 @@ import { MUTATION_CHORD_SCRIBBLE } from '../utils/mutations';
 // import chordScribbles from '../utils/chordScribbles'
 // import ScriptTag from 'react-script-tag';
 import {Helmet} from "react-helmet";
-import decode from 'jwt-decode';
 
 
 let chord1Selection, chord2Selection, username
@@ -24,7 +23,7 @@ const Home = () =>{
 
   /*/////////////////////////////////////
    first things first, get username by their email, as we need it for all mutations/queries */
-  username = Auth.getProfile().data.username
+  // username = Auth.getProfile().data.username
   
   /*/////////////////////////////////////
    chord1menu code */
@@ -136,6 +135,8 @@ const Home = () =>{
     return (    
       <main>
         <Helmet>
+         {/* chord diagrams api BEGIN THIS NEEDS TO STAY UP HERE */}
+        <script async type="text/javascript" src="https://www.scales-chords.com/api/scales-chords-api.js"></script>
           <script
           src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         
