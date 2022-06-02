@@ -291,7 +291,7 @@ const Home = () =>{
                  {/* History panel */}
                  <p class="text-center"><h4 class="alert-heading">Your History</h4></p>
                
-                  <textarea className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel}></textarea>
+                  <textarea className="form-control" id="chordHistory" placeholder="Your progress will be listed here" rows="30" defaultValue={historyPanel} readonly></textarea>
             
               </div> 
             </div>
