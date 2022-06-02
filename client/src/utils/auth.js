@@ -1,5 +1,6 @@
 // use this to decode a token and get the user's information out of it
 import decode from 'jwt-decode';
+import axios from "axios";
 
 // create a new class to instantiate for a user
 class AuthService {
@@ -14,6 +15,8 @@ class AuthService {
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token); // handwaiving here
   }
+
+ 
 
   // check if token is expired
   isTokenExpired(token) {

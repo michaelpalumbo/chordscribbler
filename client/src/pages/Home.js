@@ -9,9 +9,10 @@ import { MUTATION_CHORD_SCRIBBLE } from '../utils/mutations';
 // import ScriptTag from 'react-script-tag';
 import {Helmet} from "react-helmet";
 import decode from 'jwt-decode';
+let username = localStorage.getItem('username');
 
 
-let chord1Selection, chord2Selection, username
+let chord1Selection, chord2Selection
 
 const Home = () =>{
   const [chord1Scribble, setChord1Scribble] = useState('')
@@ -24,8 +25,10 @@ const Home = () =>{
 
   /*/////////////////////////////////////
    first things first, get username by their email, as we need it for all mutations/queries */
-  username = Auth.getProfile().data.username
-  
+ // username = Auth.getProfile().data.username
+  // Local STorage(username)
+
+
   /*/////////////////////////////////////
    chord1menu code */
 

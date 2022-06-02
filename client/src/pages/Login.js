@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 
 import AuthService from '../utils/auth';
+import { QUERY_GET_USERNAME_FROM_EMAIL } from '../utils/queries';
 
 const Login = (props) => {
   const [formState, setFormState] = useState({ email: '', password: '' });
@@ -38,6 +39,9 @@ const Login = (props) => {
       password: '',
     });
   };
+  
+ 
+  
 
   return (
     <main className="flex-row justify-center mb-4">
