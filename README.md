@@ -10,7 +10,6 @@ Roles:
 - Abdi: GraphQL
 
 Team Name: The Reduxers
-Link to Repo: https://github.com/michaelpalumbo/project3
 
 
 ## Screenshot of App
@@ -38,7 +37,7 @@ Link to Repo: https://github.com/michaelpalumbo/project3
 
 
 ## Link for the repo
-https://github.com/michaelpalumbo/project3
+https://github.com/michaelpalumbo/chordscribbler
 
 
 ## Deployment Link
