@@ -48,7 +48,6 @@ export const MUTATION_CHORD_PAIR_SCRIBBLE = gql`
   }
 `
 
-
 export const UPDATE_HISTORY = gql`
 mutation UpdateHistory($username: String!, $historyItem: String!) {
   updateHistory(username: $username, historyItem: $historyItem) {
