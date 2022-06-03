@@ -10,8 +10,6 @@ export const QUERY_GET_USERNAME_FROM_EMAIL = gql`
   }
 `;
 
-
-
 // gets query for Chord Pair Scribble
 export const QUERY_PAIR_SCRIBBLE = gql`
   query GetChordPairScribble($username: String!, $scribbleBox: Int!, $chord1: String!, $chord2: String!) {
@@ -24,6 +22,7 @@ export const QUERY_PAIR_SCRIBBLE = gql`
     }
   }
 `;
+
 // Gets query for Query Scribble
 export const QUERY_SCRIBBLE = gql`
   query Query($username: String!, $scribbleBox: Int!, $chordName: String!) {
@@ -36,8 +35,6 @@ export const QUERY_SCRIBBLE = gql`
     }
   }
 `;
-
-
 
 // gets query for history panel
 export const QUERY_HISTORY = gql`
