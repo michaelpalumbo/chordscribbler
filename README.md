@@ -41,7 +41,7 @@ https://github.com/michaelpalumbo/chordscribbler
 
 
 ## Deployment Link
-https://chordscribbles.herokuapp.com/
+https://chordscribbler.herokuapp.com/
 
 
 ## Trello board
