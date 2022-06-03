@@ -1,6 +1,6 @@
 const { Schema , model } = require('mongoose');
 
-
+// Schema for chordPairScribble
 const chordPairScribbleSchema = new Schema(
     {
         username: { 

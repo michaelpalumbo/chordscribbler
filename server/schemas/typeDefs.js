@@ -2,7 +2,7 @@
 const { gql } = require('apollo-server-express');
 
 
-// create our typeDefs
+// create the typeDefs for our site
 const typeDefs = gql`
   type ChordScribble{
     _id: ID
@@ -61,8 +61,6 @@ const typeDefs = gql`
     token: ID!
     user: User
   }
-
-
 `;
 
 // export the typeDefs
