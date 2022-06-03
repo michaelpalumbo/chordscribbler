@@ -13,6 +13,9 @@ Team Name: The Reduxers
 Link to Repo: https://github.com/michaelpalumbo/project3
 
 
+## Screenshot of App
+![CHORD Scribblr](./public/screenshot.png)
+
 ## Setup (dev-version):
 
 1. In root folder run ```npm install```
@@ -20,3 +23,30 @@ Link to Repo: https://github.com/michaelpalumbo/project3
 3. cd into client folder and run ``npm install``
 4. cd back into root folder and run `` npm run develop ``
 (this will run the full stack of the application)
+
+
+## Technologies Used
+- React
+- GraphQL
+- Bootstrap
+- TonalJS
+- Chords-Scales API
+- TonalJS
+- nodeJS
+- Apollo
+
+
+
+## Link for the repo
+https://github.com/michaelpalumbo/project3
+
+
+## Deployment Link
+https://chordscribbles.herokuapp.com/
+
+
+## Trello board
+https://trello.com/b/SFHIjiTe/chord-scribblr
+
+
+![Trello Board](./public/trello.png)
