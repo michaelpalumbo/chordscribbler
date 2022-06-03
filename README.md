@@ -14,7 +14,7 @@ Link to Repo: https://github.com/michaelpalumbo/project3
 
 
 ## Screenshot of App
-![CHORD Scribblr](./public/screenshot.png)
+![CHORD Scribblr](./client/public/screenshot.png)
 
 ## Setup (dev-version):
 
@@ -49,4 +49,4 @@ https://chordscribbles.herokuapp.com/
 https://trello.com/b/SFHIjiTe/chord-scribblr
 
 
-![Trello Board](./public/trello.png)
+![Trello Board](./client/public/trello.png)
