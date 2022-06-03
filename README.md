@@ -1,4 +1,4 @@
-# project3
+# CHORD Scribblr
 
 Summary of Project: Practice tool for chord changes, and building muscle memory of those chords. Users have a practice journal where they can attach written notes/thoughts to chord changes for their reflection/progress. (perhaps out of mvp scope: liking/commenting. Maybe top 10 progressions (maybe by most used). 
 
