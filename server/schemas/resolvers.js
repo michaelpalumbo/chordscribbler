@@ -39,31 +39,34 @@ const resolvers = {
         getUsernameFromEmail: async (parent, { email }) => {
             return User.findOne({ email })
         },
-
+        // gets ChordScribble
         getChordScribble : async (parent, {username,scribbleBox,chordName}) =>{
 
             return await ChordScribble.findOne({ username,scribbleBox,chordName });
 
         },
+        // gets Chord highlight in dropdown
         getChordHighlighting : async (parent, {username,scribbleBox}) =>{
           
                 return await ChordScribble.find({ username,scribbleBox});
         
         },
+        // Get highlight for ChordPair
         getChordPairHighlighting : async(parent,{username})=> {
             return await ChordPairScribble.find({ username});
         },
        
-        
+        // gets History from User
         getHistory: async (parent, {username})=>{
             let foo = await History.find({username})
             return foo.reverse()
         },
-
+        // gets ChordPairScribble
         getChordPairScribble : async (parent, {username,scribbleBox,chord1,chord2}) =>{
 
             return await ChordPairScribble.findOne({ username,scribbleBox,chord1,chord2 });
         },
+        // gets Chord 2 list
         chordTwoList: async (parent, {chord})=>{
             // user has selected this chord in drop-down menu 1
             let choice = await JSON.stringify(MusicTheory.getChord2List(chord))
@@ -74,12 +77,14 @@ const resolvers = {
     },
     
     Mutation: {
+        //mutation for addUser
         addUser: async (parent,args) => {
             const user = await User.create(args);
             const token = signToken(user);
 
              return { token, user };
         },
+        // mutation for user login
         login: async (parent,{ email, password }) => {
             const user = await User.findOne({ email });
 
@@ -96,6 +101,7 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
+        // gets mutation for chordScribble
         chordScribble : async (parent, {username,scribbleText,scribbleBox,chordName}) =>{
             console.log(username,scribbleText,scribbleBox,chordName)
            let newScribble 
@@ -115,6 +121,7 @@ const resolvers = {
             
             return newScribble
         },
+        // mutation for ChordScribble
         chordPairScribble : async (parent, {username,scribbleText,scribbleBox,chord1,chord2}) =>{
             console.log(username,scribbleText,scribbleBox,chord1,chord2)
             let newScribble 
@@ -134,6 +141,7 @@ const resolvers = {
              
              return newScribble
          },
+         // mutation to update user's history panel
         updateHistory: async(parent, {username, historyItem}) => {
             let timeStamp = new Date();
             return await History.create({ username, historyItem, timeStamp });
