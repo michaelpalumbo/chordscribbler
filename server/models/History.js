@@ -1,5 +1,7 @@
 const { Schema, model} = require ('mongoose');
 const moment = require('moment')
+
+//Schema for the History Panel
 const historySchema = new Schema(
     {
         username: { 
